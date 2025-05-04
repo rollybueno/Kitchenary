@@ -1,9 +1,37 @@
 <?php
 /**
- * Functions which enhance the theme by hooking into WordPress
+ * Kitchenary functions and definitions
  *
  * @package Kitchenary
  */
+
+if ( ! defined( 'KITCHENARY_VERSION' ) ) {
+	// Replace the version number of the theme on each release.
+	define( 'KITCHENARY_VERSION', '1.0.0' );
+}
+
+/**
+ * Enqueue scripts and styles.
+ */
+function kitchenary_scripts() {
+	// Enqueue Tailwind CSS.
+	wp_enqueue_style( 'tailwind-css', 'https://cdn.tailwindcss.com', array(), KITCHENARY_VERSION );
+
+	// Enqueue Font Awesome.
+	wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0' );
+
+	// Enqueue theme stylesheet.
+	wp_enqueue_style( 'kitchenary-style', get_stylesheet_uri(), array(), KITCHENARY_VERSION );
+	wp_style_add_data( 'kitchenary-style', 'rtl', 'replace' );
+
+	// Enqueue theme script.
+	wp_enqueue_script( 'kitchenary-navigation', get_template_directory_uri() . '/js/navigation.js', array(), KITCHENARY_VERSION, true );
+
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'kitchenary_scripts' );
 
 /**
  * Adds custom classes to the array of body classes.

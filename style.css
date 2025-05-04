@@ -13,3 +13,28 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: kitchenary
 Tags: blog, food, cooking, recipes, custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
 */ 
+
+/* Custom CSS for elements that need more control */
+.hero-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80');
+    background-size: cover;
+    background-position: center;
+    min-height: 60vh;
+}
+
+.recipe-card:hover .recipe-image {
+    transform: scale(1.05);
+}
+
+.recipe-image {
+    transition: transform 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
