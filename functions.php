@@ -11,6 +11,58 @@ if ( ! defined( 'KITCHENARY_VERSION' ) ) {
 }
 
 /**
+ * Register recipe post type.
+ */
+function kitchenary_register_recipe_post_type() {
+	$labels = array(
+		'name'                  => _x( 'Recipes', 'Post type general name', 'kitchenary' ),
+		'singular_name'         => _x( 'Recipe', 'Post type singular name', 'kitchenary' ),
+		'menu_name'             => _x( 'Recipes', 'Admin Menu text', 'kitchenary' ),
+		'name_admin_bar'        => _x( 'Recipe', 'Add New on Toolbar', 'kitchenary' ),
+		'add_new'               => __( 'Add New', 'kitchenary' ),
+		'add_new_item'          => __( 'Add New Recipe', 'kitchenary' ),
+		'new_item'              => __( 'New Recipe', 'kitchenary' ),
+		'edit_item'             => __( 'Edit Recipe', 'kitchenary' ),
+		'view_item'             => __( 'View Recipe', 'kitchenary' ),
+		'all_items'             => __( 'All Recipes', 'kitchenary' ),
+		'search_items'          => __( 'Search Recipes', 'kitchenary' ),
+		'parent_item_colon'     => __( 'Parent Recipes:', 'kitchenary' ),
+		'not_found'             => __( 'No recipes found.', 'kitchenary' ),
+		'not_found_in_trash'    => __( 'No recipes found in Trash.', 'kitchenary' ),
+		'featured_image'        => _x( 'Recipe Cover Image', 'Overrides the "Featured Image" phrase for this post type.', 'kitchenary' ),
+		'set_featured_image'    => _x( 'Set cover image', 'Overrides the "Set featured image" phrase for this post type.', 'kitchenary' ),
+		'remove_featured_image' => _x( 'Remove cover image', 'Overrides the "Remove featured image" phrase for this post type.', 'kitchenary' ),
+		'use_featured_image'    => _x( 'Use as cover image', 'Overrides the "Use as featured image" phrase for this post type.', 'kitchenary' ),
+		'archives'              => _x( 'Recipe archives', 'The post type archive label used in nav menus.', 'kitchenary' ),
+		'insert_into_item'      => _x( 'Insert into recipe', 'Overrides the "Insert into post" phrase for this post type.', 'kitchenary' ),
+		'uploaded_to_this_item' => _x( 'Uploaded to this recipe', 'Overrides the "Uploaded to this post" phrase for this post type.', 'kitchenary' ),
+		'filter_items_list'     => _x( 'Filter recipes list', 'Screen reader text for the filter links heading on the post type listing screen.', 'kitchenary' ),
+		'items_list_navigation' => _x( 'Recipes list navigation', 'Screen reader text for the pagination heading on the post type listing screen.', 'kitchenary' ),
+		'items_list'            => _x( 'Recipes list', 'Screen reader text for the items list heading on the post type listing screen.', 'kitchenary' ),
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'recipe' ),
+		'capability_type'    => 'post',
+		'has_archive'        => true,
+		'hierarchical'       => false,
+		'menu_position'      => 5,
+		'menu_icon'          => 'dashicons-food',
+		'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
+		'show_in_rest'       => true,
+	);
+
+	register_post_type( 'recipe', $args );
+}
+add_action( 'init', 'kitchenary_register_recipe_post_type' );
+
+/**
  * Register recipe_category taxonomy.
  */
 function kitchenary_register_recipe_taxonomy() {
@@ -35,6 +87,7 @@ function kitchenary_register_recipe_taxonomy() {
 		'show_admin_column' => true,
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'recipe-category' ),
+		'show_in_rest'      => true,
 	);
 
 	register_taxonomy( 'recipe_category', array( 'recipe' ), $args );
