@@ -2,7 +2,7 @@
 /**
  * The main template file
  *
- * @package Gourmet
+ * @package Kitchenary
  */
 
 get_header();

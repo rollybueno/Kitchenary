@@ -2,7 +2,7 @@
 /**
  * The template for displaying all pages
  *
- * @package Gourmet
+ * @package Kitchenary
  */
 
 get_header();

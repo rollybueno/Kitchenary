@@ -2,7 +2,7 @@
 /**
  * The header for our theme
  *
- * @package Gourmet
+ * @package Kitchenary
  */
 
 ?>
@@ -18,7 +18,7 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'gourmet' ); ?></a>
+	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'kitchenary' ); ?></a>
 
 	<header id="masthead" class="site-header">
 		<div class="container">
@@ -36,7 +36,7 @@
 
 			<nav id="site-navigation" class="main-navigation">
 				<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-					<span class="screen-reader-text"><?php esc_html_e( 'Primary Menu', 'gourmet' ); ?></span>
+					<span class="screen-reader-text"><?php esc_html_e( 'Primary Menu', 'kitchenary' ); ?></span>
 					<span class="hamburger"></span>
 				</button>
 				<?php

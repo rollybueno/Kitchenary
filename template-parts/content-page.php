@@ -2,7 +2,7 @@
 /**
  * Template part for displaying page content in page.php
  *
- * @package Gourmet
+ * @package Kitchenary
  */
 
 ?>
@@ -12,7 +12,7 @@
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header><!-- .entry-header -->
 
-	<?php gourmet_post_thumbnail(); ?>
+	<?php kitchenary_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
@@ -20,7 +20,7 @@
 
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'gourmet' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'kitchenary' ),
 				'after'  => '</div>',
 			)
 		);
@@ -34,7 +34,7 @@
 				sprintf(
 					wp_kses(
 						/* translators: %s: Name of current post. Only visible to screen readers */
-						__( 'Edit <span class="screen-reader-text">%s</span>', 'gourmet' ),
+						__( 'Edit <span class="screen-reader-text">%s</span>', 'kitchenary' ),
 						array(
 							'span' => array(
 								'class' => array(),

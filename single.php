@@ -2,7 +2,7 @@
 /**
  * The template for displaying all single posts
  *
- * @package Gourmet
+ * @package Kitchenary
  */
 
 get_header();
@@ -23,8 +23,8 @@ get_header();
 
 				the_post_navigation(
 					array(
-						'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'gourmet' ) . '</span> <span class="nav-title">%title</span>',
-						'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'gourmet' ) . '</span> <span class="nav-title">%title</span>',
+						'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'kitchenary' ) . '</span> <span class="nav-title">%title</span>',
+						'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'kitchenary' ) . '</span> <span class="nav-title">%title</span>',
 					)
 				);
 
