@@ -268,14 +268,13 @@ class Kitchenary_Walker_Nav_Menu extends Walker_Nav_Menu {
  */
 class Kitchenary_Footer_Menu_Walker extends Walker_Nav_Menu {
 	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
-		$output .= '<li>';
 		$output .= '<a href="' . esc_url( $item->url ) . '" class="hover:text-amber-400 transition">';
 		$output .= esc_html( $item->title );
 		$output .= '</a>';
 	}
 
 	public function end_el( &$output, $item, $depth = 0, $args = null ) {
-		$output .= '</li>';
+		// No closing tag needed since we're not using list items
 	}
 }
 
