@@ -12,6 +12,8 @@ get_header();
 		<?php get_template_part( 'template-parts/hero' ); ?>
 		<?php get_template_part( 'template-parts/featured-categories' ); ?>
 		<?php get_template_part( 'template-parts/latest-recipes' ); ?>
+		<?php get_template_part( 'template-parts/featured-recipe' ); ?>
+		
 
 		<div class="container">
 			<?php
