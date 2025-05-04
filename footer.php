@@ -92,9 +92,21 @@ $right_menu     = isset( $menu_locations['footer-right-menu'] ) ? wp_get_nav_men
 		<div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
 			<p><?php printf( esc_html__( '© %1$d %2$s. All rights reserved.', 'kitchenary' ), date( 'Y' ), get_bloginfo( 'name' ) ); ?></p>
 			<div class="flex space-x-6 mt-4 md:mt-0">
-				<a href="<?php echo esc_url( get_privacy_policy_url() ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Privacy Policy', 'kitchenary' ); ?></a>
-				<a href="#" class="hover:text-amber-400 transition"><?php esc_html_e( 'Terms of Service', 'kitchenary' ); ?></a>
-				<a href="#" class="hover:text-amber-400 transition"><?php esc_html_e( 'Cookie Policy', 'kitchenary' ); ?></a>
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' => 'footer-links',
+						'menu_class'     => 'flex space-x-6',
+						'container'      => false,
+						'fallback_cb'    => false,
+						'depth'          => 1,
+						'link_before'    => '',
+						'link_after'     => '',
+						'items_wrap'     => '%3$s',
+						'walker'         => new Kitchenary_Footer_Menu_Walker(),
+					)
+				);
+				?>
 			</div>
 		</div>
 	</div>

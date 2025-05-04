@@ -99,15 +99,15 @@ add_action( 'init', 'kitchenary_register_recipe_taxonomy' );
  */
 function kitchenary_create_default_categories() {
 	$default_categories = array(
-		'baking' => array(
+		'baking'      => array(
 			'name'        => __( 'Baking', 'kitchenary' ),
 			'description' => __( 'Delicious baked goods and desserts.', 'kitchenary' ),
 		),
-		'vegetarian' => array(
+		'vegetarian'  => array(
 			'name'        => __( 'Vegetarian', 'kitchenary' ),
 			'description' => __( 'Plant-based recipes for vegetarians.', 'kitchenary' ),
 		),
-		'desserts' => array(
+		'desserts'    => array(
 			'name'        => __( 'Desserts', 'kitchenary' ),
 			'description' => __( 'Sweet treats and desserts.', 'kitchenary' ),
 		),
@@ -148,8 +148,10 @@ function kitchenary_setup() {
 	// Register navigation menus.
 	register_nav_menus(
 		array(
-			'primary' => esc_html__( 'Primary Menu', 'kitchenary' ),
-			'footer'  => esc_html__( 'Footer Menu', 'kitchenary' ),
+			'primary'           => esc_html__( 'Primary Menu', 'kitchenary' ),
+			'footer-left-menu'  => esc_html__( 'Footer Left Menu', 'kitchenary' ),
+			'footer-right-menu' => esc_html__( 'Footer Right Menu', 'kitchenary' ),
+			'footer-links'      => __( 'Footer Links', 'kitchenary' ),
 		)
 	);
 
@@ -278,50 +280,42 @@ class Kitchenary_Footer_Menu_Walker extends Walker_Nav_Menu {
 }
 
 /**
- * Register footer menu locations
- */
-function kitchenary_register_menus() {
-	register_nav_menus(
-		array(
-			'footer-left-menu'  => esc_html__( 'Footer Left Menu', 'kitchenary' ),
-			'footer-right-menu' => esc_html__( 'Footer Right Menu', 'kitchenary' ),
-		)
-	);
-}
-add_action( 'init', 'kitchenary_register_menus' );
-
-/**
  * Enqueue scripts and styles.
  */
 function kitchenary_scripts() {
 	// Enqueue Tailwind CSS with configuration.
 	wp_enqueue_script( 'tailwind-config', 'https://cdn.tailwindcss.com', array(), KITCHENARY_VERSION, false );
-	wp_add_inline_script( 'tailwind-config', 'tailwind.config = ' . json_encode( array(
-		'content' => array(
-			'./*.php',
-			'./template-parts/**/*.php',
-			'./inc/**/*.php',
-			'./js/**/*.js',
-		),
-		'theme' => array(
-			'extend' => array(
-				'colors' => array(
-					'amber' => array(
-						50 => '#fffbeb',
-						100 => '#fef3c7',
-						200 => '#fde68a',
-						300 => '#fcd34d',
-						400 => '#fbbf24',
-						500 => '#f59e0b',
-						600 => '#d97706',
-						700 => '#b45309',
-						800 => '#92400e',
-						900 => '#78350f',
+	wp_add_inline_script(
+		'tailwind-config',
+		'tailwind.config = ' . json_encode(
+			array(
+				'content' => array(
+					'./*.php',
+					'./template-parts/**/*.php',
+					'./inc/**/*.php',
+					'./js/**/*.js',
+				),
+				'theme'   => array(
+					'extend' => array(
+						'colors' => array(
+							'amber' => array(
+								50  => '#fffbeb',
+								100 => '#fef3c7',
+								200 => '#fde68a',
+								300 => '#fcd34d',
+								400 => '#fbbf24',
+								500 => '#f59e0b',
+								600 => '#d97706',
+								700 => '#b45309',
+								800 => '#92400e',
+								900 => '#78350f',
+							),
+						),
 					),
 				),
-			),
-		),
-	) ) );
+			)
+		)
+	);
 
 	// Enqueue Font Awesome.
 	wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0' );
@@ -506,4 +500,4 @@ function kitchenary_entry_footer() {
 		'<span class="edit-link">',
 		'</span>'
 	);
-} 
+}
