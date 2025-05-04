@@ -50,6 +50,11 @@ function kitchenary_body_classes( $classes ) {
 		$classes[] = 'no-sidebar';
 	}
 
+	// Add Tailwind CSS classes.
+	$classes[] = 'font-sans';
+	$classes[] = 'bg-gray-50';
+	$classes[] = 'text-gray-800';
+
 	return $classes;
 }
 add_filter( 'body_class', 'kitchenary_body_classes' );
