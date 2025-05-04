@@ -13,7 +13,7 @@ get_header();
 		<?php get_template_part( 'template-parts/featured-categories' ); ?>
 		<?php get_template_part( 'template-parts/latest-recipes' ); ?>
 		<?php get_template_part( 'template-parts/featured-recipe' ); ?>
-		
+		<?php get_template_part( 'template-parts/newsletter' ); ?>		
 
 		<div class="container">
 			<?php
