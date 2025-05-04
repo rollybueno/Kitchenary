@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet FSE - Food Blog Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for elements that need more control */
+        .hero-image {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 60vh;
+        }
+        
+        .recipe-card:hover .recipe-image {
+            transform: scale(1.05);
+        }
+        
+        .recipe-image {
+            transition: transform 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- Header Template Part -->
+    <header class="bg-white shadow-sm sticky top-0 z-50 fade-in">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-utensils text-2xl text-amber-600"></i>
+                <h1 class="text-2xl font-bold text-amber-700">Gourmet<span class="text-amber-500">FSE</span></h1>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-amber-700 font-medium hover:text-amber-500 transition">Home</a>
+                <a href="#" class="text-gray-600 hover:text-amber-500 transition">Recipes</a>
+                <a href="#" class="text-gray-600 hover:text-amber-500 transition">Categories</a>
+                <a href="#" class="text-gray-600 hover:text-amber-500 transition">About</a>
+                <a href="#" class="text-gray-600 hover:text-amber-500 transition">Contact</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <button class="bg-amber-600 text-white px-4 py-2 rounded-full hover:bg-amber-700 transition flex items-center">
+                    <i class="fas fa-search mr-2"></i>
+                    <span class="hidden md:inline">Search</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-image flex items-center justify-center text-white fade-in">
+        <div class="text-center px-4 max-w-3xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Discover Delicious Recipes</h2>
+            <p class="text-xl mb-8">Handcrafted meals for every occasion, skill level, and dietary preference</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-full font-medium transition">
+                    Explore Recipes
+                </button>
+                <button class="bg-white hover:bg-gray-100 text-amber-700 px-6 py-3 rounded-full font-medium transition">
+                    Weekly Meal Plan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="py-12 bg-white fade-in">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Recipe Categories</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <a href="#" class="group">
+                    <div class="bg-amber-50 rounded-xl p-6 text-center transition hover:bg-amber-100 h-full">
+                        <div class="bg-amber-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 group-hover:bg-amber-200 transition">
+                            <i class="fas fa-bread-slice text-amber-700 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Baking</h3>
+                        <p class="text-gray-600 text-sm mt-1">56 Recipes</p>
+                    </div>
+                </a>
+                
+                <a href="#" class="group">
+                    <div class="bg-amber-50 rounded-xl p-6 text-center transition hover:bg-amber-100 h-full">
+                        <div class="bg-amber-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 group-hover:bg-amber-200 transition">
+                            <i class="fas fa-leaf text-amber-700 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Vegan</h3>
+                        <p class="text-gray-600 text-sm mt-1">32 Recipes</p>
+                    </div>
+                </a>
+                
+                <a href="#" class="group">
+                    <div class="bg-amber-50 rounded-xl p-6 text-center transition hover:bg-amber-100 h-full">
+                        <div class="bg-amber-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 group-hover:bg-amber-200 transition">
+                            <i class="fas fa-drumstick-bite text-amber-700 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Protein</h3>
+                        <p class="text-gray-600 text-sm mt-1">48 Recipes</p>
+                    </div>
+                </a>
+                
+                <a href="#" class="group">
+                    <div class="bg-amber-50 rounded-xl p-6 text-center transition hover:bg-amber-100 h-full">
+                        <div class="bg-amber-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 group-hover:bg-amber-200 transition">
+                            <i class="fas fa-glass-whiskey text-amber-700 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Drinks</h3>
+                        <p class="text-gray-600 text-sm mt-1">24 Recipes</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Recipes -->
+    <section class="py-12 bg-gray-50 fade-in">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Latest Recipes</h2>
+                <a href="#" class="text-amber-600 hover:text-amber-700 font-medium flex items-center">
+                    View All <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Recipe Card 1 -->
+                <article class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+                    <div class="overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1546069901-2a67d1ff210c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80" 
+                             alt="Avocado Toast" class="recipe-image w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded">Breakfast</span>
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-gray-600">4.9</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Avocado Toast with Poached Eggs</h3>
+                        <p class="text-gray-600 mb-4">A perfect healthy breakfast that's ready in just 15 minutes with simple ingredients.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-clock mr-1"></i> 15 mins</span>
+                            <span><i class="fas fa-utensils mr-1"></i> Easy</span>
+                            <span><i class="far fa-heart mr-1"></i> 124</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Recipe Card 2 -->
+                <article class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+                    <div class="overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80" 
+                             alt="Buddha Bowl" class="recipe-image w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Vegan</span>
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-gray-600">4.7</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Rainbow Buddha Bowl</h3>
+                        <p class="text-gray-600 mb-4">Packed with nutrients and colors, this bowl is as delicious as it is beautiful.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-clock mr-1"></i> 25 mins</span>
+                            <span><i class="fas fa-utensils mr-1"></i> Medium</span>
+                            <span><i class="far fa-heart mr-1"></i> 89</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Recipe Card 3 -->
+                <article class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+                    <div class="overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1481931098730-318b6f776db0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80" 
+                             alt="Pasta" class="recipe-image w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Italian</span>
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-gray-600">5.0</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Creamy Garlic Parmesan Pasta</h3>
+                        <p class="text-gray-600 mb-4">Indulge in this rich and creamy pasta dish that's perfect for date night or special occasions.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-clock mr-1"></i> 30 mins</span>
+                            <span><i class="fas fa-utensils mr-1"></i> Medium</span>
+                            <span><i class="far fa-heart mr-1"></i> 156</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Recipe -->
+    <section class="py-16 bg-white fade-in">
+        <div class="container mx-auto px-4">
+            <div class="bg-amber-50 rounded-2xl overflow-hidden shadow-lg">
+                <div class="md:flex">
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80" 
+                             alt="Featured Recipe" class="w-full h-full object-cover">
+                    </div>
+                    <div class="md:w-1/2 p-8 md:p-12">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-amber-600 text-white text-xs font-medium px-2.5 py-0.5 rounded mr-2">Featured</span>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Healthy</span>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-4">Mediterranean Quinoa Salad</h2>
+                        <p class="text-gray-600 mb-6">This vibrant salad is packed with protein, fiber, and healthy fats. It's perfect for meal prep and stays fresh for days!</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div>
+                                <p class="text-gray-500 text-sm">Prep Time</p>
+                                <p class="font-medium">15 mins</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Cook Time</p>
+                                <p class="font-medium">20 mins</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Servings</p>
+                                <p class="font-medium">4</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Calories</p>
+                                <p class="font-medium">320/serving</p>
+                            </div>
+                        </div>
+                        
+                        <button class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-full font-medium transition w-full md:w-auto">
+                            View Full Recipe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-gray-800 text-white fade-in">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <i class="fas fa-paper-plane text-4xl text-amber-400 mb-4"></i>
+                <h2 class="text-3xl font-bold mb-4">Join Our Foodie Community</h2>
+                <p class="text-gray-300 mb-8">Subscribe to our newsletter and get weekly recipes, cooking tips, and exclusive content straight to your inbox.</p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-full font-medium transition whitespace-nowrap">
+                        Subscribe Now
+                    </button>
+                </form>
+                
+                <p class="text-gray-400 text-xs mt-4">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12 fade-in">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-utensils text-2xl text-amber-500"></i>
+                        <h3 class="text-xl font-bold text-white">Gourmet<span class="text-amber-400">FSE</span></h3>
+                    </div>
+                    <p class="mb-4">Delicious recipes for every home cook. From quick weeknight meals to impressive dinner party dishes.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-amber-400 transition">Home</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Recipes</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold text-lg mb-4">Recipe Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-amber-400 transition">Breakfast</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Lunch</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Dinner</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Desserts</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition">Drinks</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold text-lg mb-4">Contact Us</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-amber-400 mt-1 mr-2"></i>
+                            <span>123 Food Street, Culinary City</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt text-amber-400 mr-2"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-amber-400 mr-2"></i>
+                            <span>hello@gourmetfse.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p>© 2023 GourmetFSE. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-amber-400 transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-amber-400 transition">Terms of Service</a>
+                    <a href="#" class="hover:text-amber-400 transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-amber-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-amber-600 transition opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Simple animation for recipe cards when they come into view
+        const recipeCards = document.querySelectorAll('.recipe-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeInUp');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        recipeCards.forEach(card => {
+            observer.observe(card);
+        });
+        
+        // Mobile menu toggle (simplified for this demo)
+        document.querySelector('button.md\\:hidden').addEventListener('click', () => {
+            alert('Mobile menu would open here in a real implementation');
+        });
+    </script>
+</body>
+</html>
