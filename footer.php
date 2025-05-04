@@ -1,61 +1,90 @@
 <?php
 /**
- * The template for displaying the footer
+ * Template part for displaying footer.
  *
  * @package Kitchenary
  */
 
 ?>
+<footer class="bg-gray-900 text-gray-300 py-12 fade-in">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-2 mb-4">
+                    <i class="fas fa-utensils text-2xl text-amber-500"></i>
+                    <h3 class="text-xl font-bold text-white"><?php bloginfo( 'name' ); ?><span class="text-amber-400">FSE</span></h3>
+                </div>
+                <p class="mb-4"><?php esc_html_e( 'Delicious recipes for every home cook. From quick weeknight meals to impressive dinner party dishes.', 'kitchenary' ); ?></p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-amber-400 transition"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold text-lg mb-4"><?php esc_html_e( 'Quick Links', 'kitchenary' ); ?></h4>
+                <ul class="space-y-2">
+                    <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Home', 'kitchenary' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( get_post_type_archive_link( 'recipe' ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Recipes', 'kitchenary' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Blog', 'kitchenary' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'about' ) ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'About Us', 'kitchenary' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'contact' ) ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Contact', 'kitchenary' ); ?></a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold text-lg mb-4"><?php esc_html_e( 'Recipe Categories', 'kitchenary' ); ?></h4>
+                <ul class="space-y-2">
+                    <?php
+                    $categories = get_terms( array(
+                        'taxonomy'   => 'recipe_category',
+                        'hide_empty' => true,
+                        'number'     => 5,
+                    ) );
 
-	<footer id="colophon" class="site-footer">
-		<div class="container">
-			<div class="footer-widgets">
-				<div class="footer-widget">
-					<h3 class="widget-title"><?php esc_html_e( 'About Us', 'kitchenary' ); ?></h3>
-					<p><?php esc_html_e( 'Welcome to our food blog where we share delicious recipes and cooking tips.', 'kitchenary' ); ?></p>
-				</div>
-
-				<div class="footer-widget">
-					<h3 class="widget-title"><?php esc_html_e( 'Quick Links', 'kitchenary' ); ?></h3>
-					<?php
-					wp_nav_menu(
-						array(
-							'theme_location' => 'primary',
-							'menu_class'     => 'footer-menu',
-							'container'      => false,
-						)
-					);
-					?>
-				</div>
-
-				<div class="footer-widget">
-					<h3 class="widget-title"><?php esc_html_e( 'Follow Us', 'kitchenary' ); ?></h3>
-					<div class="social-links">
-						<a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-						<a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-						<a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-						<a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
-					</div>
-				</div>
-			</div>
-
-			<div class="site-info">
-				<p>
-					<?php
-					printf(
-						/* translators: %1$s: Current year, %2$s: Site name */
-						esc_html__( '© %1$s %2$s. All rights reserved.', 'kitchenary' ),
-						esc_html( date_i18n( 'Y' ) ),
-						'<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a>'
-					);
-					?>
-				</p>
-			</div><!-- .site-info -->
-		</div><!-- .container -->
-	</footer><!-- #colophon -->
-</div><!-- #page -->
-
-<?php wp_footer(); ?>
-
-</body>
-</html> 
+                    if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) :
+                        foreach ( $categories as $category ) :
+                            ?>
+                            <li>
+                                <a href="<?php echo esc_url( get_term_link( $category ) ); ?>" class="hover:text-amber-400 transition">
+                                    <?php echo esc_html( $category->name ); ?>
+                                </a>
+                            </li>
+                            <?php
+                        endforeach;
+                    endif;
+                    ?>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold text-lg mb-4"><?php esc_html_e( 'Contact Us', 'kitchenary' ); ?></h4>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt text-amber-400 mt-1 mr-2"></i>
+                        <span><?php esc_html_e( '123 Food Street, Culinary City', 'kitchenary' ); ?></span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-phone-alt text-amber-400 mr-2"></i>
+                        <span><?php esc_html_e( '+1 (555) 123-4567', 'kitchenary' ); ?></span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-envelope text-amber-400 mr-2"></i>
+                        <span><?php esc_html_e( 'hello@gourmetfse.com', 'kitchenary' ); ?></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p><?php printf( esc_html__( '© %d %s. All rights reserved.', 'kitchenary' ), date( 'Y' ), get_bloginfo( 'name' ) ); ?></p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="<?php echo esc_url( get_privacy_policy_url() ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Privacy Policy', 'kitchenary' ); ?></a>
+                <a href="#" class="hover:text-amber-400 transition"><?php esc_html_e( 'Terms of Service', 'kitchenary' ); ?></a>
+                <a href="#" class="hover:text-amber-400 transition"><?php esc_html_e( 'Cookie Policy', 'kitchenary' ); ?></a>
+            </div>
+        </div>
+    </div>
+</footer> 
