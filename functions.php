@@ -11,6 +11,75 @@ if ( ! defined( 'KITCHENARY_VERSION' ) ) {
 }
 
 /**
+ * Register recipe_category taxonomy.
+ */
+function kitchenary_register_recipe_taxonomy() {
+	$labels = array(
+		'name'              => _x( 'Recipe Categories', 'taxonomy general name', 'kitchenary' ),
+		'singular_name'     => _x( 'Recipe Category', 'taxonomy singular name', 'kitchenary' ),
+		'search_items'      => __( 'Search Recipe Categories', 'kitchenary' ),
+		'all_items'         => __( 'All Recipe Categories', 'kitchenary' ),
+		'parent_item'       => __( 'Parent Recipe Category', 'kitchenary' ),
+		'parent_item_colon' => __( 'Parent Recipe Category:', 'kitchenary' ),
+		'edit_item'         => __( 'Edit Recipe Category', 'kitchenary' ),
+		'update_item'       => __( 'Update Recipe Category', 'kitchenary' ),
+		'add_new_item'      => __( 'Add New Recipe Category', 'kitchenary' ),
+		'new_item_name'     => __( 'New Recipe Category Name', 'kitchenary' ),
+		'menu_name'         => __( 'Recipe Categories', 'kitchenary' ),
+	);
+
+	$args = array(
+		'hierarchical'      => true,
+		'labels'            => $labels,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => 'recipe-category' ),
+	);
+
+	register_taxonomy( 'recipe_category', array( 'recipe' ), $args );
+}
+add_action( 'init', 'kitchenary_register_recipe_taxonomy' );
+
+/**
+ * Create default recipe categories on theme activation.
+ */
+function kitchenary_create_default_categories() {
+	$default_categories = array(
+		'baking' => array(
+			'name'        => __( 'Baking', 'kitchenary' ),
+			'description' => __( 'Delicious baked goods and desserts.', 'kitchenary' ),
+		),
+		'vegetarian' => array(
+			'name'        => __( 'Vegetarian', 'kitchenary' ),
+			'description' => __( 'Plant-based recipes for vegetarians.', 'kitchenary' ),
+		),
+		'desserts' => array(
+			'name'        => __( 'Desserts', 'kitchenary' ),
+			'description' => __( 'Sweet treats and desserts.', 'kitchenary' ),
+		),
+		'main-dishes' => array(
+			'name'        => __( 'Main Dishes', 'kitchenary' ),
+			'description' => __( 'Main course recipes and entrees.', 'kitchenary' ),
+		),
+	);
+
+	foreach ( $default_categories as $slug => $category ) {
+		if ( ! term_exists( $slug, 'recipe_category' ) ) {
+			wp_insert_term(
+				$category['name'],
+				'recipe_category',
+				array(
+					'description' => $category['description'],
+					'slug'        => $slug,
+				)
+			);
+		}
+	}
+}
+add_action( 'after_switch_theme', 'kitchenary_create_default_categories' );
+
+/**
  * Sets up theme defaults and registers support for various WordPress features.
  */
 function kitchenary_setup() {
