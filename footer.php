@@ -25,38 +25,40 @@
             
             <div>
                 <h4 class="text-white font-semibold text-lg mb-4"><?php esc_html_e( 'Quick Links', 'kitchenary' ); ?></h4>
-                <ul class="space-y-2">
-                    <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Home', 'kitchenary' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( get_post_type_archive_link( 'recipe' ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Recipes', 'kitchenary' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Blog', 'kitchenary' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'about' ) ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'About Us', 'kitchenary' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( get_permalink( get_page_by_path( 'contact' ) ) ); ?>" class="hover:text-amber-400 transition"><?php esc_html_e( 'Contact', 'kitchenary' ); ?></a></li>
-                </ul>
+                <?php
+                wp_nav_menu(
+                    array(
+                        'theme_location' => 'footer-left-menu',
+                        'menu_class'     => 'space-y-2',
+                        'container'      => false,
+                        'fallback_cb'    => false,
+                        'depth'          => 1,
+                        'link_before'    => '',
+                        'link_after'     => '',
+                        'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+                        'walker'         => new Kitchenary_Footer_Menu_Walker(),
+                    )
+                );
+                ?>
             </div>
             
             <div>
                 <h4 class="text-white font-semibold text-lg mb-4"><?php esc_html_e( 'Recipe Categories', 'kitchenary' ); ?></h4>
-                <ul class="space-y-2">
-                    <?php
-                    $categories = get_terms( array(
-                        'taxonomy'   => 'recipe_category',
-                        'hide_empty' => true,
-                        'number'     => 5,
-                    ) );
-
-                    if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) :
-                        foreach ( $categories as $category ) :
-                            ?>
-                            <li>
-                                <a href="<?php echo esc_url( get_term_link( $category ) ); ?>" class="hover:text-amber-400 transition">
-                                    <?php echo esc_html( $category->name ); ?>
-                                </a>
-                            </li>
-                            <?php
-                        endforeach;
-                    endif;
-                    ?>
-                </ul>
+                <?php
+                wp_nav_menu(
+                    array(
+                        'theme_location' => 'footer-right-menu',
+                        'menu_class'     => 'space-y-2',
+                        'container'      => false,
+                        'fallback_cb'    => false,
+                        'depth'          => 1,
+                        'link_before'    => '',
+                        'link_after'     => '',
+                        'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+                        'walker'         => new Kitchenary_Footer_Menu_Walker(),
+                    )
+                );
+                ?>
             </div>
             
             <div>
