@@ -17,7 +17,7 @@ $latest_recipes = new WP_Query(
 
 if ( $latest_recipes->have_posts() ) :
 	?>
-	<section class="py-12 bg-white fade-in">
+	<section class="py-12 bg-gray-50 fade-in">
 		<div class="container mx-auto px-4">
 			<div class="flex justify-between items-center mb-8">
 				<h2 class="text-3xl font-bold"><?php esc_html_e( 'Latest Recipes', 'kitchenary' ); ?></h2>
