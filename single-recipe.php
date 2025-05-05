@@ -35,25 +35,41 @@ get_header();
 						<?php endif; ?>
 
 						<div class="p-8">
-							<!-- Recipe Title -->
-							<h1 class="text-3xl font-bold text-gray-800 mb-4"><?php the_title(); ?></h1>
+							<!-- Recipe Header -->
+							<div class="mb-8">
+								<h1 class="text-4xl font-bold text-gray-800 mb-4"><?php the_title(); ?></h1>
+								
+								<!-- Recipe Rating -->
+								<div class="flex items-center gap-2 mb-4">
+									<div class="flex text-amber-500">
+										<?php
+										$rating = get_post_meta( get_the_ID(), 'recipe_rating', true );
+										$rating = $rating ? $rating : 5; // Default to 5 stars if no rating.
+										for ( $i = 1; $i <= 5; $i++ ) :
+											?>
+											<i class="fas fa-star <?php echo $i <= $rating ? 'text-amber-500' : 'text-gray-300'; ?>"></i>
+										<?php endfor; ?>
+									</div>
+									<span class="text-sm text-gray-600">(<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_reviews', true ) ?: '0' ); ?> reviews)</span>
+								</div>
 
-							<!-- Recipe Meta -->
-							<div class="flex flex-wrap gap-4 mb-8 text-sm text-gray-600">
-								<span class="flex items-center">
-									<i class="far fa-clock mr-2"></i>
-									<?php echo get_the_date(); ?>
-								</span>
-								<span class="flex items-center">
-									<i class="far fa-user mr-2"></i>
-									<?php the_author(); ?>
-								</span>
-								<?php if (get_comments_number() > 0) : ?>
+								<!-- Recipe Meta -->
+								<div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
 									<span class="flex items-center">
-										<i class="far fa-comment mr-2"></i>
-										<?php comments_number('No comments', '1 comment', '% comments'); ?>
+										<i class="far fa-clock mr-2"></i>
+										<?php echo get_the_date(); ?>
 									</span>
-								<?php endif; ?>
+									<span class="flex items-center">
+										<i class="far fa-user mr-2"></i>
+										<?php the_author(); ?>
+									</span>
+									<?php if (get_comments_number() > 0) : ?>
+										<span class="flex items-center">
+											<i class="far fa-comment mr-2"></i>
+											<?php comments_number('No comments', '1 comment', '% comments'); ?>
+										</span>
+									<?php endif; ?>
+								</div>
 							</div>
 
 							<!-- Recipe Content -->
