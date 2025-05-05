@@ -27,15 +27,13 @@ get_header();
 								<?php endif; ?>
 								<div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-600">
 									<?php if ( get_the_author_meta( 'user_url' ) ) : ?>
-										<a href="<?php echo esc_url( get_the_author_meta( 'user_url' ) ); ?>" 
-										   class="flex items-center hover:text-amber-500 transition">
+										<a href="<?php echo esc_url( get_the_author_meta( 'user_url' ) ); ?>" class="flex items-center hover:text-amber-500 transition">
 											<i class="fas fa-globe mr-2"></i>
 											<?php echo esc_url( get_the_author_meta( 'user_url' ) ); ?>
 										</a>
 									<?php endif; ?>
 									<?php if ( get_the_author_meta( 'twitter' ) ) : ?>
-										<a href="<?php echo esc_url( get_the_author_meta( 'twitter' ) ); ?>" 
-										   class="flex items-center hover:text-amber-500 transition">
+										<a href="<?php echo esc_url( get_the_author_meta( 'twitter' ) ); ?>" class="flex items-center hover:text-amber-500 transition">
 											<i class="fab fa-twitter mr-2"></i>
 											<?php echo esc_html( get_the_author_meta( 'twitter' ) ); ?>
 										</a>
@@ -49,31 +47,45 @@ get_header();
 				<!-- Author Posts -->
 				<?php if ( have_posts() ) : ?>
 					<?php
-					// Group posts by type
-					$recipes = array();
+					// Group posts by type.
+					$recipes       = array();
 					$regular_posts = array();
-					
-					while ( have_posts() ) {
-						the_post();
-						if ( get_post_type() === 'recipe' ) {
-							$recipes[] = get_the_ID();
-						} else {
-							$regular_posts[] = get_the_ID();
+
+					// Get all posts for the current author.
+					$author_id = get_the_author_meta( 'ID' );
+					$args      = array(
+						'post_type'      => array( 'post', 'recipe' ),
+						'author'         => $author_id,
+						'posts_per_page' => -1,
+					);
+
+					$author_posts = new WP_Query( $args );
+
+					if ( $author_posts->have_posts() ) {
+						while ( $author_posts->have_posts() ) {
+							$author_posts->the_post();
+							if ( 'recipe' === get_post_type() ) {
+								$recipes[] = get_the_ID();
+							} else {
+								$regular_posts[] = get_the_ID();
+							}
 						}
 					}
-					
-					// Reset the post data
+
+					// Reset the post data.
 					wp_reset_postdata();
-					
-					// Display Recipes Section
-					if ( !empty($recipes) ) : ?>
+
+					// Display Recipes Section.
+					if ( ! empty( $recipes ) ) :
+						?>
 						<div class="mb-12">
-							<h2 class="text-2xl font-bold text-gray-800 mb-6"><?php esc_html_e('Recipes', 'kitchenary'); ?></h2>
+							<h2 class="text-2xl font-bold text-gray-800 mb-6"><?php esc_html_e( 'Recipes', 'kitchenary' ); ?></h2>
 							<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-								<?php foreach ( $recipes as $recipe_id ) : 
-									$post = get_post($recipe_id);
-									setup_postdata($post);
-								?>
+								<?php
+								foreach ( $recipes as $recipe_id ) {
+									$post = get_post( $recipe_id );
+									setup_postdata( $post );
+									?>
 									<article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition group">
 										<div class="relative">
 											<a href="<?php the_permalink(); ?>" class="block">
@@ -81,9 +93,7 @@ get_header();
 													<?php if ( has_post_thumbnail() ) : ?>
 														<?php the_post_thumbnail( 'medium_large', array( 'class' => 'w-full h-64 object-cover transition duration-300 group-hover:scale-105' ) ); ?>
 													<?php else : ?>
-														<img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" 
-															 alt="<?php esc_attr_e('Recipe Placeholder', 'kitchenary'); ?>"
-															 class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
+														<img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" alt="<?php esc_attr_e( 'Recipe Placeholder', 'kitchenary' ); ?>" class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
 													<?php endif; ?>
 												</div>
 											</a>
@@ -94,8 +104,7 @@ get_header();
 													?>
 													<div class="flex flex-wrap gap-2">
 														<?php foreach ( $categories as $category ) : ?>
-															<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" 
-															   class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
+															<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
 																<?php echo esc_html( $category->name ); ?>
 															</a>
 														<?php endforeach; ?>
@@ -147,25 +156,29 @@ get_header();
 
 											<!-- Read More Link -->
 											<a href="<?php the_permalink(); ?>" class="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition">
-												<?php esc_html_e('View Recipe', 'kitchenary'); ?>
+												<?php esc_html_e( 'View Recipe', 'kitchenary' ); ?>
 												<i class="fas fa-arrow-right ml-2"></i>
 											</a>
 										</div>
 									</article>
-								<?php endforeach; ?>
+									<?php
+								}
+								wp_reset_postdata();
+								?>
 							</div>
 						</div>
 					<?php endif; ?>
 
 					<!-- Display Regular Posts Section -->
-					<?php if ( !empty($regular_posts) ) : ?>
+					<?php if ( ! empty( $regular_posts ) ) : ?>
 						<div class="mb-12">
-							<h2 class="text-2xl font-bold text-gray-800 mb-6"><?php esc_html_e('Blog Posts', 'kitchenary'); ?></h2>
+							<h2 class="text-2xl font-bold text-gray-800 mb-6"><?php esc_html_e( 'Blog Posts', 'kitchenary' ); ?></h2>
 							<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-								<?php foreach ( $regular_posts as $post_id ) : 
-									$post = get_post($post_id);
-									setup_postdata($post);
-								?>
+								<?php
+								foreach ( $regular_posts as $post_id ) :
+									$post = get_post( $post_id );
+									setup_postdata( $post );
+									?>
 									<article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition group">
 										<div class="relative">
 											<a href="<?php the_permalink(); ?>" class="block">
@@ -173,9 +186,7 @@ get_header();
 													<?php if ( has_post_thumbnail() ) : ?>
 														<?php the_post_thumbnail( 'medium_large', array( 'class' => 'w-full h-64 object-cover transition duration-300 group-hover:scale-105' ) ); ?>
 													<?php else : ?>
-														<img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" 
-															 alt="<?php esc_attr_e('Blog Post Placeholder', 'kitchenary'); ?>"
-															 class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
+														<img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" alt="<?php esc_attr_e( 'Blog Post Placeholder', 'kitchenary' ); ?>" class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
 													<?php endif; ?>
 												</div>
 											</a>
@@ -186,8 +197,7 @@ get_header();
 													?>
 													<div class="flex flex-wrap gap-2">
 														<?php foreach ( $categories as $category ) : ?>
-															<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" 
-															   class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
+															<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>"  class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
 																<?php echo esc_html( $category->name ); ?>
 															</a>
 														<?php endforeach; ?>
@@ -223,7 +233,7 @@ get_header();
 
 											<!-- Read More Link -->
 											<a href="<?php the_permalink(); ?>" class="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition">
-												<?php esc_html_e('Read More', 'kitchenary'); ?>
+												<?php esc_html_e( 'Read More', 'kitchenary' ); ?>
 												<i class="fas fa-arrow-right ml-2"></i>
 											</a>
 										</div>
