@@ -522,14 +522,28 @@ function kitchenary_entry_footer() {
 }
 
 /**
- * Register widget area.
+ * Register widget areas.
  */
 function kitchenary_widgets_init() {
+	// Recipe Sidebar (for single-recipe.php)
 	register_sidebar(
 		array(
 			'name'          => esc_html__('Recipe Sidebar', 'kitchenary'),
 			'id'            => 'recipe-sidebar',
 			'description'   => esc_html__('Add widgets here to appear in recipe sidebar.', 'kitchenary'),
+			'before_widget' => '<div id="%1$s" class="widget %2$s bg-white rounded-xl shadow-md overflow-hidden mb-6">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<h3 class="text-xl font-bold text-white bg-amber-500 px-6 py-4">',
+			'after_title'   => '</h3><div class="p-6 widget-content"><style>.widget-content a { @apply text-gray-600 hover:text-amber-500 transition-colors duration-200; } .widget-content ul { @apply space-y-2; } .widget-content li { @apply border-b border-gray-100 last:border-0 pb-2 last:pb-0; }</style>',
+		)
+	);
+
+	// Blog Sidebar (for single.php)
+	register_sidebar(
+		array(
+			'name'          => esc_html__('Blog Sidebar', 'kitchenary'),
+			'id'            => 'blog-sidebar',
+			'description'   => esc_html__('Add widgets here to appear in blog post sidebar.', 'kitchenary'),
 			'before_widget' => '<div id="%1$s" class="widget %2$s bg-white rounded-xl shadow-md overflow-hidden mb-6">',
 			'after_widget'  => '</div>',
 			'before_title'  => '<h3 class="text-xl font-bold text-white bg-amber-500 px-6 py-4">',

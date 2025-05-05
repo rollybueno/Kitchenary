@@ -12,7 +12,7 @@ get_header();
     <div class="container mx-auto px-4">
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Main Content -->
-            <div class="<?php echo is_active_sidebar('sidebar-1') ? 'lg:w-2/3' : 'lg:w-full max-w-4xl mx-auto'; ?>">
+            <div class="<?php echo is_active_sidebar('blog-sidebar') ? 'lg:w-2/3' : 'lg:w-full max-w-4xl mx-auto'; ?>">
                 <?php while (have_posts()) : the_post(); ?>
                     <article class="bg-white rounded-xl shadow-md overflow-hidden">
                         <!-- Featured Image -->
@@ -160,10 +160,10 @@ get_header();
             </div>
 
             <!-- Sidebar -->
-            <?php if (is_active_sidebar('sidebar-1')) : ?>
+            <?php if (is_active_sidebar('blog-sidebar')) : ?>
                 <div class="lg:w-1/3">
                     <div class="sticky top-8">
-                        <?php dynamic_sidebar('sidebar-1'); ?>
+                        <?php dynamic_sidebar('blog-sidebar'); ?>
                     </div>
                 </div>
             <?php endif; ?>
