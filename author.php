@@ -48,103 +48,190 @@ get_header();
 
 				<!-- Author Posts -->
 				<?php if ( have_posts() ) : ?>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-						<?php
-						while ( have_posts() ) :
-							the_post();
-							?>
-							<article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition group">
-								<div class="relative">
-									<?php if ( has_post_thumbnail() ) : ?>
-										<a href="<?php the_permalink(); ?>" class="block">
-											<div class="overflow-hidden">
-												<?php the_post_thumbnail( 'medium_large', array( 'class' => 'w-full h-64 object-cover transition duration-300 group-hover:scale-105' ) ); ?>
-											</div>
-										</a>
-									<?php endif; ?>
-									<div class="absolute top-4 left-4">
-										<?php
-										$categories = get_the_category();
-										if ( $categories ) :
-											?>
-											<div class="flex flex-wrap gap-2">
-												<?php foreach ( $categories as $category ) : ?>
-													<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" 
-													   class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
-														<?php echo esc_html( $category->name ); ?>
-													</a>
-												<?php endforeach; ?>
-											</div>
-										<?php endif; ?>
-									</div>
-								</div>
-
-								<div class="p-6">
-									<?php if ( get_post_type() === 'recipe' ) : ?>
-										<!-- Recipe Rating -->
-										<div class="flex items-center gap-2 mb-3">
-											<div class="flex text-amber-500">
+					<?php
+					// Group posts by type
+					$recipes = array();
+					$regular_posts = array();
+					
+					while ( have_posts() ) {
+						the_post();
+						if ( get_post_type() === 'recipe' ) {
+							$recipes[] = get_the_ID();
+						} else {
+							$regular_posts[] = get_the_ID();
+						}
+					}
+					
+					// Reset the post data
+					wp_reset_postdata();
+					
+					// Display Recipes Section
+					if ( !empty($recipes) ) : ?>
+						<div class="mb-12">
+							<h2 class="text-2xl font-bold text-gray-800 mb-6"><?php esc_html_e('Recipes', 'kitchenary'); ?></h2>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+								<?php foreach ( $recipes as $recipe_id ) : 
+									$post = get_post($recipe_id);
+									setup_postdata($post);
+								?>
+									<article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition group">
+										<div class="relative">
+											<a href="<?php the_permalink(); ?>" class="block">
+												<div class="overflow-hidden">
+													<?php if ( has_post_thumbnail() ) : ?>
+														<?php the_post_thumbnail( 'medium_large', array( 'class' => 'w-full h-64 object-cover transition duration-300 group-hover:scale-105' ) ); ?>
+													<?php else : ?>
+														<img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" 
+															 alt="<?php esc_attr_e('Recipe Placeholder', 'kitchenary'); ?>"
+															 class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
+													<?php endif; ?>
+												</div>
+											</a>
+											<div class="absolute top-4 left-4">
 												<?php
-												$rating = get_post_meta( get_the_ID(), 'recipe_rating', true );
-												$rating = $rating ? $rating : 5; // Default to 5 stars if no rating
-												for ( $i = 1; $i <= 5; $i++ ) :
+												$categories = get_the_category();
+												if ( $categories ) :
 													?>
-													<i class="fas fa-star <?php echo $i <= $rating ? 'text-amber-500' : 'text-gray-300'; ?>"></i>
-												<?php endfor; ?>
+													<div class="flex flex-wrap gap-2">
+														<?php foreach ( $categories as $category ) : ?>
+															<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" 
+															   class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
+																<?php echo esc_html( $category->name ); ?>
+															</a>
+														<?php endforeach; ?>
+													</div>
+												<?php endif; ?>
 											</div>
-											<span class="text-sm text-gray-600">(<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_reviews', true ) ?: '0' ); ?> reviews)</span>
 										</div>
 
-										<!-- Recipe Meta -->
-										<div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
-											<div class="flex items-center gap-1">
-												<i class="fas fa-clock"></i>
-												<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_cooking_time', true ) ); ?>
+										<div class="p-6">
+											<!-- Recipe Rating -->
+											<div class="flex items-center gap-2 mb-3">
+												<div class="flex text-amber-500">
+													<?php
+													$rating = get_post_meta( get_the_ID(), 'recipe_rating', true );
+													$rating = $rating ? $rating : 5; // Default to 5 stars if no rating.
+													for ( $i = 1; $i <= 5; $i++ ) :
+														?>
+														<i class="fas fa-star <?php echo $i <= $rating ? 'text-amber-500' : 'text-gray-300'; ?>"></i>
+													<?php endfor; ?>
+												</div>
+												<span class="text-sm text-gray-600">(<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_reviews', true ) ?: '0' ); ?> reviews)</span>
 											</div>
-											<div class="flex items-center gap-1">
-												<i class="fas fa-utensils"></i>
-												<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_servings', true ) ); ?>
+
+											<!-- Recipe Meta -->
+											<div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+												<div class="flex items-center gap-1">
+													<i class="fas fa-clock"></i>
+													<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_cooking_time', true ) ); ?>
+												</div>
+												<div class="flex items-center gap-1">
+													<i class="fas fa-utensils"></i>
+													<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_servings', true ) ); ?>
+												</div>
+												<div class="flex items-center gap-1">
+													<i class="fas fa-fire"></i>
+													<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_difficulty', true ) ); ?>
+												</div>
 											</div>
-											<div class="flex items-center gap-1">
-												<i class="fas fa-fire"></i>
-												<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_difficulty', true ) ); ?>
+
+											<!-- Post Title -->
+											<h2 class="text-xl font-bold mb-3 group-hover:text-amber-600 transition">
+												<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+											</h2>
+
+											<!-- Post Excerpt -->
+											<div class="text-gray-600 line-clamp-2 mb-4">
+												<?php the_excerpt(); ?>
+											</div>
+
+											<!-- Read More Link -->
+											<a href="<?php the_permalink(); ?>" class="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition">
+												<?php esc_html_e('View Recipe', 'kitchenary'); ?>
+												<i class="fas fa-arrow-right ml-2"></i>
+											</a>
+										</div>
+									</article>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php endif; ?>
+
+					<!-- Display Regular Posts Section -->
+					<?php if ( !empty($regular_posts) ) : ?>
+						<div class="mb-12">
+							<h2 class="text-2xl font-bold text-gray-800 mb-6"><?php esc_html_e('Blog Posts', 'kitchenary'); ?></h2>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+								<?php foreach ( $regular_posts as $post_id ) : 
+									$post = get_post($post_id);
+									setup_postdata($post);
+								?>
+									<article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition group">
+										<div class="relative">
+											<a href="<?php the_permalink(); ?>" class="block">
+												<div class="overflow-hidden">
+													<?php if ( has_post_thumbnail() ) : ?>
+														<?php the_post_thumbnail( 'medium_large', array( 'class' => 'w-full h-64 object-cover transition duration-300 group-hover:scale-105' ) ); ?>
+													<?php else : ?>
+														<img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" 
+															 alt="<?php esc_attr_e('Blog Post Placeholder', 'kitchenary'); ?>"
+															 class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
+													<?php endif; ?>
+												</div>
+											</a>
+											<div class="absolute top-4 left-4">
+												<?php
+												$categories = get_the_category();
+												if ( $categories ) :
+													?>
+													<div class="flex flex-wrap gap-2">
+														<?php foreach ( $categories as $category ) : ?>
+															<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" 
+															   class="bg-white/90 text-amber-600 hover:bg-white hover:text-amber-700 px-3 py-1 rounded-full text-sm font-medium transition">
+																<?php echo esc_html( $category->name ); ?>
+															</a>
+														<?php endforeach; ?>
+													</div>
+												<?php endif; ?>
 											</div>
 										</div>
-									<?php else : ?>
-										<!-- Post Meta -->
-										<div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
-											<span class="flex items-center">
-												<i class="far fa-clock mr-2"></i>
-												<?php echo get_the_date(); ?>
-											</span>
-											<?php if ( get_comments_number() > 0 ) : ?>
+
+										<div class="p-6">
+											<!-- Post Meta -->
+											<div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
 												<span class="flex items-center">
-													<i class="far fa-comment mr-2"></i>
-													<?php comments_number( 'No comments', '1 comment', '% comments' ); ?>
+													<i class="far fa-clock mr-2"></i>
+													<?php echo get_the_date(); ?>
 												</span>
-											<?php endif; ?>
+												<?php if ( get_comments_number() > 0 ) : ?>
+													<span class="flex items-center">
+														<i class="far fa-comment mr-2"></i>
+														<?php comments_number( 'No comments', '1 comment', '% comments' ); ?>
+													</span>
+												<?php endif; ?>
+											</div>
+
+											<!-- Post Title -->
+											<h2 class="text-xl font-bold mb-3 group-hover:text-amber-600 transition">
+												<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+											</h2>
+
+											<!-- Post Excerpt -->
+											<div class="text-gray-600 line-clamp-2 mb-4">
+												<?php the_excerpt(); ?>
+											</div>
+
+											<!-- Read More Link -->
+											<a href="<?php the_permalink(); ?>" class="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition">
+												<?php esc_html_e('Read More', 'kitchenary'); ?>
+												<i class="fas fa-arrow-right ml-2"></i>
+											</a>
 										</div>
-									<?php endif; ?>
-
-									<!-- Post Title -->
-									<h2 class="text-xl font-bold mb-3 group-hover:text-amber-600 transition">
-										<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-									</h2>
-
-									<!-- Post Excerpt -->
-									<div class="text-gray-600 line-clamp-2 mb-4">
-										<?php the_excerpt(); ?>
-									</div>
-
-									<!-- Read More Link -->
-									<a href="<?php the_permalink(); ?>" class="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition">
-										<?php echo get_post_type() === 'recipe' ? esc_html__( 'View Recipe', 'kitchenary' ) : esc_html__( 'Read More', 'kitchenary' ); ?>
-										<i class="fas fa-arrow-right ml-2"></i>
-									</a>
-								</div>
-							</article>
-						<?php endwhile; ?>
-					</div>
+									</article>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php endif; ?>
 
 					<!-- Pagination -->
 					<div class="mt-12">
