@@ -54,7 +54,7 @@ function kitchenary_register_recipe_post_type() {
 		'hierarchical'       => false,
 		'menu_position'      => 5,
 		'menu_icon'          => 'dashicons-food',
-		'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
+		'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'comments' ),
 		'show_in_rest'       => true,
 	);
 

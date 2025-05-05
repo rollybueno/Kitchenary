@@ -174,7 +174,11 @@ get_header();
 					<!-- Comments Section -->
 					<?php
 					if (comments_open() || get_comments_number()) :
-						comments_template();
+						?>
+						<div class="mt-16">
+							<?php comments_template(); ?>
+						</div>
+						<?php
 					endif;
 					?>
 
