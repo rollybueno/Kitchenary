@@ -8,127 +8,159 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main">
-	<?php
-	while ( have_posts() ) :
-		the_post();
-		?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'max-w-4xl mx-auto px-4 py-12' ); ?>>
-			<header class="entry-header mb-8">
-				<?php
-				if ( has_post_thumbnail() ) :
-					?>
-					<div class="mb-6 rounded-xl overflow-hidden">
-						<?php the_post_thumbnail( 'large', array( 'class' => 'w-full h-auto' ) ); ?>
-					</div>
-					<?php
-				endif;
-				?>
-				<h1 class="entry-title text-4xl font-bold mb-4"><?php the_title(); ?></h1>
-				<div class="entry-meta flex items-center gap-4 text-gray-600">
-					<?php
-					$categories = get_the_terms( get_the_ID(), 'recipe_category' );
-					if ( $categories && ! is_wp_error( $categories ) ) :
-						?>
-						<div class="flex items-center gap-2">
-							<i class="fas fa-tag"></i>
-							<?php
-							$category_links = array();
-							foreach ( $categories as $category ) {
-								$category_links[] = '<a href="' . esc_url( get_term_link( $category ) ) . '" class="hover:text-amber-600 transition">' . esc_html( $category->name ) . '</a>';
-							}
-							echo implode( ', ', $category_links ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+<main class="py-16 bg-gray-50">
+	<div class="container mx-auto px-4">
+		<?php while (have_posts()) : the_post(); ?>
+			<article class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+				<!-- Featured Image -->
+				<?php if (has_post_thumbnail()) : ?>
+					<div class="relative">
+						<?php the_post_thumbnail('full', ['class' => 'w-full h-[400px] object-cover']); ?>
+						<!-- Category Badge -->
+						<?php
+						$categories = get_the_terms(get_the_ID(), 'recipe_category');
+						if ($categories && !is_wp_error($categories)) :
+							$category = $categories[0];
 							?>
+							<div class="absolute top-4 left-4">
+								<span class="bg-amber-100 text-amber-800 text-sm font-medium px-3 py-1 rounded-full">
+									<?php echo esc_html($category->name); ?>
+								</span>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+
+				<div class="p-8">
+					<!-- Recipe Title -->
+					<h1 class="text-3xl font-bold text-gray-800 mb-4"><?php the_title(); ?></h1>
+
+					<!-- Recipe Meta -->
+					<div class="flex flex-wrap gap-4 mb-8 text-sm text-gray-600">
+						<span class="flex items-center">
+							<i class="far fa-clock mr-2"></i>
+							<?php echo get_the_date(); ?>
+						</span>
+						<span class="flex items-center">
+							<i class="far fa-user mr-2"></i>
+							<?php the_author(); ?>
+						</span>
+						<?php if (get_comments_number() > 0) : ?>
+							<span class="flex items-center">
+								<i class="far fa-comment mr-2"></i>
+								<?php comments_number('No comments', '1 comment', '% comments'); ?>
+							</span>
+						<?php endif; ?>
+					</div>
+
+					<!-- Recipe Content -->
+					<div class="prose prose-lg max-w-none mb-8">
+						<?php the_content(); ?>
+					</div>
+
+					<!-- Recipe Tags -->
+					<?php
+					$tags = get_the_terms(get_the_ID(), 'recipe_tag');
+					if ($tags && !is_wp_error($tags)) : ?>
+						<div class="mb-8">
+							<h3 class="text-lg font-semibold text-gray-800 mb-3">Tags</h3>
+							<div class="flex flex-wrap gap-2">
+								<?php foreach ($tags as $tag) : ?>
+									<a href="<?php echo esc_url(get_term_link($tag)); ?>" 
+									   class="bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-800 px-3 py-1 rounded-full text-sm transition">
+										<?php echo esc_html($tag->name); ?>
+									</a>
+								<?php endforeach; ?>
+							</div>
 						</div>
-						<?php
-					endif;
-					?>
-					<div class="flex items-center gap-2">
-						<i class="fas fa-clock"></i>
-						<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_cooking_time', true ) ); ?>
+					<?php endif; ?>
+
+					<!-- Author Bio -->
+					<div class="border-t border-gray-200 pt-8 mt-8">
+						<div class="flex items-start gap-4">
+							<div class="w-16 h-16 rounded-full overflow-hidden bg-amber-100 flex items-center justify-center">
+								<?php echo get_avatar(get_the_author_meta('ID'), 64, '', '', ['class' => 'w-full h-full object-cover']); ?>
+							</div>
+							<div>
+								<h3 class="text-lg font-semibold text-gray-800 mb-1"><?php the_author(); ?></h3>
+								<p class="text-gray-600 mb-2"><?php the_author_meta('description'); ?></p>
+								<a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>" 
+								   class="text-amber-600 hover:text-amber-700 font-medium">
+									View all recipes by <?php the_author(); ?>
+								</a>
+							</div>
+						</div>
 					</div>
-					<div class="flex items-center gap-2">
-						<i class="fas fa-utensils"></i>
-						<?php echo esc_html( get_post_meta( get_the_ID(), 'recipe_servings', true ) ); ?>
-					</div>
 				</div>
-			</header>
+			</article>
 
-			<div class="entry-content prose max-w-none">
-				<div class="mb-8">
-					<h2 class="text-2xl font-bold mb-4"><?php esc_html_e( 'Description', 'kitchenary' ); ?></h2>
-					<?php the_excerpt(); ?>
-				</div>
+			<!-- Related Recipes -->
+			<?php
+			$categories = get_the_terms(get_the_ID(), 'recipe_category');
+			if ($categories && !is_wp_error($categories)) :
+				$category_ids = array();
+				foreach ($categories as $category) {
+					$category_ids[] = $category->term_id;
+				}
 
-				<div class="mb-8">
-					<h2 class="text-2xl font-bold mb-4"><?php esc_html_e( 'Ingredients', 'kitchenary' ); ?></h2>
-					<?php
-					$ingredients = get_post_meta( get_the_ID(), 'recipe_ingredients', true );
-					if ( $ingredients ) :
-						?>
-						<ul class="list-disc pl-6">
-							<?php
-							foreach ( $ingredients as $ingredient ) :
-								?>
-								<li><?php echo esc_html( $ingredient ); ?></li>
-								<?php
-							endforeach;
-							?>
-						</ul>
-						<?php
-					endif;
-					?>
-				</div>
-
-				<div class="mb-8">
-					<h2 class="text-2xl font-bold mb-4"><?php esc_html_e( 'Instructions', 'kitchenary' ); ?></h2>
-					<?php
-					$instructions = get_post_meta( get_the_ID(), 'recipe_instructions', true );
-					if ( $instructions ) :
-						?>
-						<ol class="list-decimal pl-6">
-							<?php
-							foreach ( $instructions as $instruction ) :
-								?>
-								<li class="mb-2"><?php echo esc_html( $instruction ); ?></li>
-								<?php
-							endforeach;
-							?>
-						</ol>
-						<?php
-					endif;
-					?>
-				</div>
-
-				<?php
-				the_content();
-				?>
-			</div>
-
-			<footer class="entry-footer mt-8 pt-8 border-t">
-				<?php
-				edit_post_link(
-					sprintf(
-						wp_kses(
-							/* translators: %s: Name of current post. Only visible to screen readers */
-							__( 'Edit <span class="screen-reader-text">%s</span>', 'kitchenary' ),
-							array(
-								'span' => array(
-									'class' => array(),
-								),
-							)
+				$related_args = array(
+					'post_type'      => 'recipe',
+					'posts_per_page' => 3,
+					'post__not_in'   => array(get_the_ID()),
+					'tax_query'      => array(
+						array(
+							'taxonomy' => 'recipe_category',
+							'field'    => 'term_id',
+							'terms'    => $category_ids,
 						),
-						wp_kses_post( get_the_title() )
 					),
-					'<span class="edit-link">',
-					'</span>'
 				);
-				?>
-			</footer>
-		</article>
-		<?php
-	endwhile;
-	?>
+
+				$related_query = new WP_Query($related_args);
+
+				if ($related_query->have_posts()) : ?>
+					<div class="max-w-4xl mx-auto mt-16">
+						<h2 class="text-2xl font-bold text-gray-800 mb-8">Related Recipes</h2>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+							<?php while ($related_query->have_posts()) : $related_query->the_post(); ?>
+								<article class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+									<?php if (has_post_thumbnail()) : ?>
+										<div class="overflow-hidden">
+											<?php the_post_thumbnail('medium_large', ['class' => 'recipe-image w-full h-48 object-cover']); ?>
+										</div>
+									<?php endif; ?>
+									<div class="p-4">
+										<h3 class="text-lg font-bold mb-2">
+											<a href="<?php the_permalink(); ?>" class="text-gray-800 hover:text-amber-600 transition">
+												<?php the_title(); ?>
+											</a>
+										</h3>
+										<p class="text-gray-600 text-sm mb-3">
+											<?php echo wp_trim_words(get_the_excerpt(), 15); ?>
+										</p>
+										<a href="<?php the_permalink(); ?>" class="text-amber-600 hover:text-amber-700 text-sm font-medium">
+											Read Recipe <i class="fas fa-arrow-right ml-1"></i>
+										</a>
+									</div>
+								</article>
+							<?php endwhile; ?>
+						</div>
+					</div>
+				<?php
+				endif;
+				wp_reset_postdata();
+			endif;
+			?>
+
+			<!-- Comments Section -->
+			<?php
+			if (comments_open() || get_comments_number()) :
+				comments_template();
+			endif;
+			?>
+
+		<?php endwhile; ?>
+	</div>
 </main>
 
 <?php
