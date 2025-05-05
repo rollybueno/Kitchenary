@@ -113,6 +113,8 @@ get_header();
 						</div>
 					</article>
 
+					<?php get_template_part( 'template-parts/recipe-reviews' ); ?>
+
 					<!-- Related Recipes -->
 					<?php
 					$categories = get_the_terms(get_the_ID(), 'recipe_category');

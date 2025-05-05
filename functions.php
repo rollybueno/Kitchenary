@@ -145,6 +145,11 @@ function kitchenary_setup() {
 	// Enable support for Post Thumbnails on posts and pages.
 	add_theme_support( 'post-thumbnails' );
 
+	// Add custom image sizes
+	add_image_size( 'kitchenary-card', 600, 400, true ); // For blog cards and recipe cards
+	add_image_size( 'kitchenary-featured', 1200, 600, true ); // For featured images and full-width
+	add_image_size( 'kitchenary-hero', 1920, 800, true ); // For hero sections
+
 	// Register navigation menus.
 	register_nav_menus(
 		array(
@@ -552,3 +557,270 @@ function kitchenary_widgets_init() {
 	);
 }
 add_action('widgets_init', 'kitchenary_widgets_init');
+
+/**
+ * Register recipe review post type.
+ */
+function kitchenary_register_recipe_review_post_type() {
+	$labels = array(
+		'name'                  => _x( 'Recipe Reviews', 'Post type general name', 'kitchenary' ),
+		'singular_name'         => _x( 'Recipe Review', 'Post type singular name', 'kitchenary' ),
+		'menu_name'             => _x( 'Recipe Reviews', 'Admin Menu text', 'kitchenary' ),
+		'name_admin_bar'        => _x( 'Recipe Review', 'Add New on Toolbar', 'kitchenary' ),
+		'add_new'               => __( 'Add New', 'kitchenary' ),
+		'add_new_item'          => __( 'Add New Review', 'kitchenary' ),
+		'new_item'              => __( 'New Review', 'kitchenary' ),
+		'edit_item'             => __( 'Edit Review', 'kitchenary' ),
+		'view_item'             => __( 'View Review', 'kitchenary' ),
+		'all_items'             => __( 'All Reviews', 'kitchenary' ),
+		'search_items'          => __( 'Search Reviews', 'kitchenary' ),
+		'not_found'             => __( 'No reviews found.', 'kitchenary' ),
+		'not_found_in_trash'    => __( 'No reviews found in Trash.', 'kitchenary' ),
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => 'edit.php?post_type=recipe',
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'recipe-review' ),
+		'capability_type'    => 'post',
+		'has_archive'        => false,
+		'hierarchical'       => false,
+		'menu_position'      => null,
+		'supports'           => array( 'title', 'editor', 'author' ),
+		'show_in_rest'       => true,
+	);
+
+	register_post_type( 'recipe_review', $args );
+}
+add_action( 'init', 'kitchenary_register_recipe_review_post_type' );
+
+/**
+ * Add meta boxes for recipe review.
+ */
+function kitchenary_add_recipe_review_meta_boxes() {
+	add_meta_box(
+		'recipe_review_details',
+		__( 'Review Details', 'kitchenary' ),
+		'kitchenary_recipe_review_meta_box_callback',
+		'recipe_review',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'kitchenary_add_recipe_review_meta_boxes' );
+
+/**
+ * Recipe review meta box callback.
+ */
+function kitchenary_recipe_review_meta_box_callback( $post ) {
+	wp_nonce_field( 'recipe_review_meta_box', 'recipe_review_meta_box_nonce' );
+
+	$rating = get_post_meta( $post->ID, '_recipe_review_rating', true );
+	$recipe_id = get_post_meta( $post->ID, '_recipe_review_recipe_id', true );
+	$helpful_votes = get_post_meta( $post->ID, '_recipe_review_helpful_votes', true );
+	$helpful_votes = $helpful_votes ? $helpful_votes : 0;
+
+	?>
+	<div class="recipe-review-meta">
+		<p>
+			<label for="recipe_review_rating"><?php esc_html_e( 'Rating (1-5):', 'kitchenary' ); ?></label>
+			<select name="recipe_review_rating" id="recipe_review_rating" required>
+				<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
+					<option value="<?php echo esc_attr( $i ); ?>" <?php selected( $rating, $i ); ?>>
+						<?php echo esc_html( $i ); ?> <?php echo $i === 1 ? esc_html__( 'Star', 'kitchenary' ) : esc_html__( 'Stars', 'kitchenary' ); ?>
+					</option>
+				<?php endfor; ?>
+			</select>
+		</p>
+
+		<p>
+			<label for="recipe_review_recipe_id"><?php esc_html_e( 'Recipe:', 'kitchenary' ); ?></label>
+			<select name="recipe_review_recipe_id" id="recipe_review_recipe_id" required>
+				<option value=""><?php esc_html_e( 'Select a recipe', 'kitchenary' ); ?></option>
+				<?php
+				$recipes = get_posts( array(
+					'post_type'      => 'recipe',
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'order'          => 'ASC',
+				) );
+
+				foreach ( $recipes as $recipe ) :
+					?>
+					<option value="<?php echo esc_attr( $recipe->ID ); ?>" <?php selected( $recipe_id, $recipe->ID ); ?>>
+						<?php echo esc_html( $recipe->post_title ); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		</p>
+
+		<p>
+			<label><?php esc_html_e( 'Helpful Votes:', 'kitchenary' ); ?></label>
+			<span><?php echo esc_html( $helpful_votes ); ?></span>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Save recipe review meta box data.
+ */
+function kitchenary_save_recipe_review_meta_box_data( $post_id ) {
+	if ( ! isset( $_POST['recipe_review_meta_box_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( $_POST['recipe_review_meta_box_nonce'], 'recipe_review_meta_box' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['recipe_review_rating'] ) ) {
+		update_post_meta( $post_id, '_recipe_review_rating', sanitize_text_field( $_POST['recipe_review_rating'] ) );
+	}
+
+	if ( isset( $_POST['recipe_review_recipe_id'] ) ) {
+		update_post_meta( $post_id, '_recipe_review_recipe_id', sanitize_text_field( $_POST['recipe_review_recipe_id'] ) );
+	}
+}
+add_action( 'save_post_recipe_review', 'kitchenary_save_recipe_review_meta_box_data' );
+
+/**
+ * Update recipe rating when a review is added or updated.
+ */
+function kitchenary_update_recipe_rating( $post_id ) {
+	$recipe_id = get_post_meta( $post_id, '_recipe_review_recipe_id', true );
+	if ( ! $recipe_id ) {
+		return;
+	}
+
+	$reviews = get_posts( array(
+		'post_type'      => 'recipe_review',
+		'posts_per_page' => -1,
+		'meta_key'       => '_recipe_review_recipe_id',
+		'meta_value'     => $recipe_id,
+	) );
+
+	$total_rating = 0;
+	$review_count = count( $reviews );
+
+	foreach ( $reviews as $review ) {
+		$rating = get_post_meta( $review->ID, '_recipe_review_rating', true );
+		$total_rating += intval( $rating );
+	}
+
+	$average_rating = $review_count > 0 ? round( $total_rating / $review_count, 1 ) : 0;
+
+	update_post_meta( $recipe_id, 'recipe_rating', $average_rating );
+	update_post_meta( $recipe_id, 'recipe_reviews', $review_count );
+}
+add_action( 'save_post_recipe_review', 'kitchenary_update_recipe_rating' );
+
+/**
+ * Handle recipe review submission.
+ */
+function kitchenary_handle_recipe_review_submission() {
+	check_ajax_referer( 'submit_recipe_review', 'recipe_review_nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => __( 'You must be logged in to submit a review.', 'kitchenary' ) ) );
+	}
+
+	$recipe_id = isset( $_POST['recipe_id'] ) ? intval( $_POST['recipe_id'] ) : 0;
+	$title = isset( $_POST['review_title'] ) ? sanitize_text_field( $_POST['review_title'] ) : '';
+	$rating = isset( $_POST['review_rating'] ) ? intval( $_POST['review_rating'] ) : 0;
+	$content = isset( $_POST['review_content'] ) ? wp_kses_post( $_POST['review_content'] ) : '';
+
+	if ( ! $recipe_id || ! $title || ! $rating || ! $content ) {
+		wp_send_json_error( array( 'message' => __( 'Please fill in all required fields.', 'kitchenary' ) ) );
+	}
+
+	$current_user = wp_get_current_user();
+	$has_reviewed = get_posts( array(
+		'post_type'      => 'recipe_review',
+		'posts_per_page' => 1,
+		'meta_key'       => '_recipe_review_recipe_id',
+		'meta_value'     => $recipe_id,
+		'author'         => $current_user->ID,
+	) );
+
+	if ( $has_reviewed ) {
+		wp_send_json_error( array( 'message' => __( 'You have already reviewed this recipe.', 'kitchenary' ) ) );
+	}
+
+	$review_id = wp_insert_post( array(
+		'post_title'   => $title,
+		'post_content' => $content,
+		'post_status'  => 'publish',
+		'post_type'    => 'recipe_review',
+		'post_author'  => $current_user->ID,
+	) );
+
+	if ( is_wp_error( $review_id ) ) {
+		wp_send_json_error( array( 'message' => __( 'Error creating review. Please try again.', 'kitchenary' ) ) );
+	}
+
+	update_post_meta( $review_id, '_recipe_review_rating', $rating );
+	update_post_meta( $review_id, '_recipe_review_recipe_id', $recipe_id );
+	update_post_meta( $review_id, '_recipe_review_helpful_votes', 0 );
+
+	wp_send_json_success( array( 'message' => __( 'Review submitted successfully.', 'kitchenary' ) ) );
+}
+add_action( 'wp_ajax_submit_recipe_review', 'kitchenary_handle_recipe_review_submission' );
+
+/**
+ * Handle recipe review helpful vote.
+ */
+function kitchenary_handle_recipe_review_vote() {
+	check_ajax_referer( 'recipe_review_vote', 'nonce' );
+
+	$review_id = isset( $_POST['review_id'] ) ? intval( $_POST['review_id'] ) : 0;
+	if ( ! $review_id ) {
+		wp_send_json_error( array( 'message' => __( 'Invalid review.', 'kitchenary' ) ) );
+	}
+
+	$helpful_votes = get_post_meta( $review_id, '_recipe_review_helpful_votes', true );
+	$helpful_votes = $helpful_votes ? $helpful_votes : 0;
+	$helpful_votes++;
+
+	update_post_meta( $review_id, '_recipe_review_helpful_votes', $helpful_votes );
+
+	wp_send_json_success( array( 'votes' => $helpful_votes ) );
+}
+add_action( 'wp_ajax_vote_recipe_review', 'kitchenary_handle_recipe_review_vote' );
+add_action( 'wp_ajax_nopriv_vote_recipe_review', 'kitchenary_handle_recipe_review_vote' );
+
+/**
+ * Enqueue recipe review scripts.
+ */
+function kitchenary_enqueue_recipe_review_scripts() {
+	if ( is_singular( 'recipe' ) ) {
+		wp_enqueue_script(
+			'recipe-reviews',
+			get_template_directory_uri() . '/js/recipe-reviews.js',
+			array( 'jquery' ),
+			KITCHENARY_VERSION,
+			true
+		);
+
+		wp_localize_script(
+			'recipe-reviews',
+			'recipeReviews',
+			array(
+				'nonce' => wp_create_nonce( 'recipe_review_vote' ),
+			)
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'kitchenary_enqueue_recipe_review_scripts' );

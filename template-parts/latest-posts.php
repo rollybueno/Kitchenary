@@ -39,7 +39,7 @@ if ( $latest_posts->have_posts() ) :
 									<div class="overflow-hidden">
 										<?php
 										the_post_thumbnail(
-											'medium_large',
+											'kitchenary-card',
 											array(
 												'class' => 'w-full h-64 object-cover transition duration-300 group-hover:scale-105',
 											)
