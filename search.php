@@ -82,6 +82,12 @@ get_header();
                     'prev_text' => '<i class="fas fa-chevron-left"></i>',
                     'next_text' => '<i class="fas fa-chevron-right"></i>',
                     'class'     => 'flex space-x-2',
+                    'before_page_number' => '<span class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full transition">',
+                    'after_page_number'  => '</span>',
+                    'link_before'        => '<span class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full transition">',
+                    'link_after'         => '</span>',
+                    'prev_link'          => '<span class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full transition">',
+                    'next_link'          => '<span class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full transition">',
                 ));
                 ?>
             </div>
