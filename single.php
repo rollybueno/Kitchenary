@@ -97,7 +97,7 @@ get_header();
                         </div>
                     </article>
 
-                    <!-- Related Recipes -->
+                    <!-- Related Posts -->
                     <?php
                     $categories = get_the_category();
                     if ($categories) :
@@ -117,7 +117,7 @@ get_header();
 
                         if ($related_query->have_posts()) : ?>
                             <div class="mt-16">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-8">Related Recipes</h2>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-8">Related Posts</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                                     <?php while ($related_query->have_posts()) : $related_query->the_post(); ?>
                                         <article class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
@@ -136,7 +136,7 @@ get_header();
                                                     <?php echo wp_trim_words(get_the_excerpt(), 15); ?>
                                                 </p>
                                                 <a href="<?php the_permalink(); ?>" class="text-amber-600 hover:text-amber-700 text-sm font-medium">
-                                                    Read Recipe <i class="fas fa-arrow-right ml-1"></i>
+                                                    Read More <i class="fas fa-arrow-right ml-1"></i>
                                                 </a>
                                             </div>
                                         </article>
