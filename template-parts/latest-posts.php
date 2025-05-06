@@ -47,6 +47,8 @@ if ( $latest_posts->have_posts() ) :
 										?>
 									</div>
 								</a>
+							<?php else : ?>
+								<img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/dan-gold-4_jhDO54BYg-unsplash.jpg" alt="<?php esc_attr_e( 'Recipe Placeholder', 'kitchenary' ); ?>" class="w-full h-64 object-cover transition duration-300 group-hover:scale-105">
 							<?php endif; ?>
 							<div class="absolute top-4 left-4">
 								<?php
