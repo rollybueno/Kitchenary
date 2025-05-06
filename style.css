@@ -55,3 +55,62 @@ Tags: blog, food, cooking, recipes, custom-background, custom-logo, custom-menu,
 .fade-in {
 	animation: fadeIn 0.5s ease-in;
 }
+
+/* WordPress Default Image Sizes */
+.size-thumbnail {
+	max-width: 150px;
+	height: auto;
+}
+
+.size-medium {
+	max-width: 300px;
+	height: auto;
+}
+
+.size-large {
+	max-width: 1024px;
+	height: auto;
+}
+
+.size-full {
+	max-width: 100%;
+	height: auto;
+}
+
+/* WordPress Alignment Classes */
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.alignleft {
+	float: left;
+	margin-right: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+.alignright {
+	float: right;
+	margin-left: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.alignleft,
+	.alignright {
+		float: none;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+	}
+}
+
+/* Clear floats */
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
