@@ -97,6 +97,69 @@ Tags: blog, food, cooking, recipes, custom-background, custom-logo, custom-menu,
 	margin-bottom: 1.5em;
 }
 
+/* WordPress Paragraph Styling */
+.entry-content p {
+	margin-bottom: 1.5em;
+	line-height: 1.8;
+}
+
+.entry-content p:last-child {
+	margin-bottom: 0;
+}
+
+.entry-content p + p {
+	margin-top: 1.5em;
+}
+
+/* WordPress Heading Styling */
+.entry-content h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	line-height: 1.2;
+	margin: 2em 0 1em;
+	color: #1a1a1a;
+}
+
+.entry-content h2 {
+	font-size: 2rem;
+	font-weight: 700;
+	line-height: 1.3;
+	margin: 1.75em 0 0.875em;
+	color: #1a1a1a;
+}
+
+.entry-content h3 {
+	font-size: 1.75rem;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 1.5em 0 0.75em;
+	color: #2d3748;
+}
+
+.entry-content h4 {
+	font-size: 1.5rem;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 1.25em 0 0.625em;
+	color: #2d3748;
+}
+
+.entry-content h5 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 1em 0 0.5em;
+	color: #4a5568;
+}
+
+.entry-content h6 {
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 0.875em 0 0.4375em;
+	color: #4a5568;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.alignleft,
@@ -105,6 +168,22 @@ Tags: blog, food, cooking, recipes, custom-background, custom-logo, custom-menu,
 		margin-left: auto;
 		margin-right: auto;
 		display: block;
+	}
+
+	.entry-content h1 {
+		font-size: 2rem;
+	}
+
+	.entry-content h2 {
+		font-size: 1.75rem;
+	}
+
+	.entry-content h3 {
+		font-size: 1.5rem;
+	}
+
+	.entry-content h4 {
+		font-size: 1.25rem;
 	}
 }
 

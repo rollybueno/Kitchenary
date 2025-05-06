@@ -73,7 +73,7 @@ get_header();
 							</div>
 
 							<!-- Recipe Content -->
-							<div class="prose prose-lg max-w-none mb-8">
+							<div class="entry-content prose prose-lg max-w-none mb-8">
 								<?php the_content(); ?>
 							</div>
 
