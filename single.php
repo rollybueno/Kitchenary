@@ -36,7 +36,7 @@ get_header();
 
                         <div class="p-8">
                             <!-- Recipe Title -->
-                            <h1 class="text-3xl font-bold text-gray-800 mb-4"><?php the_title(); ?></h1>
+                            <h1 class="text-4xl font-black text-gray9800 mb-4"><?php the_title(); ?></h1>
 
                             <!-- Recipe Meta -->
                             <div class="flex flex-wrap gap-4 mb-8 text-sm text-gray-600">
