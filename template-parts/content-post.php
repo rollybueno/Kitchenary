@@ -14,11 +14,8 @@ get_header();
 		<div class="flex flex-col lg:flex-row gap-8">
 			<!-- Main Content -->
 			<div class="<?php echo is_active_sidebar( 'blog-sidebar' ) ? 'lg:w-2/3' : 'lg:w-full max-w-4xl mx-auto'; ?>">
-				<?php
-				while ( have_posts() ) :
-					the_post();
-					?>
-					<article class="bg-white rounded-xl shadow-md overflow-hidden">
+				<?php while ( have_posts() ) : the_post(); ?>
+					<article class="bg-white rounded-xl shadow-md overflow-hidden my-8">
 						<!-- Featured Image -->
 						<?php if ( has_post_thumbnail() ) : ?>
 							<div class="relative">
