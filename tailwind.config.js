@@ -4,12 +4,12 @@ module.exports = {
     './*.php',
     './template-parts/**/*.php',
     './inc/**/*.php',
-    './js/**/*.js',
+    './assets/js/**/*.js',
   ],
   theme: {
     extend: {
       colors: {
-        amber: {
+        'amber': {
           50: '#fffbeb',
           100: '#fef3c7',
           200: '#fde68a',
@@ -25,5 +25,4 @@ module.exports = {
     },
   },
   plugins: [],
-  prefix: 'tw-',
 } 

@@ -307,49 +307,23 @@ class Kitchenary_Footer_Menu_Walker extends Walker_Nav_Menu {
  * Enqueue scripts and styles.
  */
 function kitchenary_scripts() {
-	// Enqueue Tailwind CSS with configuration.
-	wp_enqueue_script( 'tailwind-config', 'https://cdn.tailwindcss.com', array(), KITCHENARY_VERSION, false );
-	wp_add_inline_script(
-		'tailwind-config',
-		'tailwind.config = ' . json_encode(
-			array(
-				'content' => array(
-					'./*.php',
-					'./template-parts/**/*.php',
-					'./inc/**/*.php',
-					'./js/**/*.js',
-				),
-				'theme'   => array(
-					'extend' => array(
-						'colors' => array(
-							'amber' => array(
-								50  => '#fffbeb',
-								100 => '#fef3c7',
-								200 => '#fde68a',
-								300 => '#fcd34d',
-								400 => '#fbbf24',
-								500 => '#f59e0b',
-								600 => '#d97706',
-								700 => '#b45309',
-								800 => '#92400e',
-								900 => '#78350f',
-							),
-						),
-					),
-				),
-			)
-		)
-	);
-
-	// Enqueue Font Awesome.
-	wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0' );
-
-	// Enqueue theme stylesheet.
-	wp_enqueue_style( 'kitchenary-style', get_stylesheet_uri(), array(), KITCHENARY_VERSION );
-	wp_style_add_data( 'kitchenary-style', 'rtl', 'replace' );
-
-	// Enqueue theme script.
-	wp_enqueue_script( 'kitchenary-navigation', get_template_directory_uri() . '/js/navigation.js', array(), KITCHENARY_VERSION, true );
+	// Enqueue main stylesheet
+	wp_enqueue_style('kitchenary-style', get_stylesheet_uri(), array(), wp_get_theme()->get('Version'));
+	
+	// Enqueue Tailwind CSS
+	wp_enqueue_style('kitchenary-tailwind', get_template_directory_uri() . '/assets/css/main.css', array(), wp_get_theme()->get('Version'));
+	
+	// Enqueue Font Awesome
+	wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', array(), '6.0.0');
+	
+	// Enqueue Swiper CSS
+	wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0');
+	
+	// Enqueue Swiper JS
+	wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
+	
+	// Enqueue custom JS
+	wp_enqueue_script('kitchenary-scripts', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), wp_get_theme()->get('Version'), true);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
