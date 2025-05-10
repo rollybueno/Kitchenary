@@ -96,14 +96,14 @@ $right_menu     = isset( $menu_locations['footer-right-menu'] ) ? wp_get_nav_men
 				wp_nav_menu(
 					array(
 						'theme_location' => 'footer-links',
-						'menu_class'     => 'flex space-x-6',
+						'menu_class'     => '',
 						'container'      => false,
 						'fallback_cb'    => false,
 						'depth'          => 1,
 						'link_before'    => '',
 						'link_after'     => '',
 						'items_wrap'     => '%3$s',
-						'walker'         => new Kitchenary_Footer_Menu_Walker(),
+						'walker'         => new Kitchenary_Footer_Links_Walker(),
 					)
 				);
 				?>

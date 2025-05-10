@@ -289,21 +289,6 @@ class Kitchenary_Walker_Nav_Menu extends Walker_Nav_Menu {
 }
 
 /**
- * Custom menu walker for footer menu
- */
-class Kitchenary_Footer_Menu_Walker extends Walker_Nav_Menu {
-	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
-		$output .= '<a href="' . esc_url( $item->url ) . '" class="hover:text-amber-400 transition">';
-		$output .= esc_html( $item->title );
-		$output .= '</a>';
-	}
-
-	public function end_el( &$output, $item, $depth = 0, $args = null ) {
-		// No closing tag needed since we're not using list items
-	}
-}
-
-/**
  * Enqueue scripts and styles.
  */
 function kitchenary_scripts() {
@@ -806,3 +791,6 @@ function kitchenary_enqueue_recipe_review_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'kitchenary_enqueue_recipe_review_scripts' );
+
+require_once get_template_directory() . '/inc/class-kitchenary-footer-menu-walker.php';
+require_once get_template_directory() . '/inc/class-kitchenary-footer-links-walker.php';
