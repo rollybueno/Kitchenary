@@ -197,94 +197,94 @@ add_action( 'after_setup_theme', 'kitchenary_setup' );
  * Custom navigation walker class for the theme.
  */
 class Kitchenary_Walker_Nav_Menu extends Walker_Nav_Menu {
-	public function start_lvl(&$output, $depth = 0, $args = null) {
-		$indent = str_repeat("\t", $depth);
-		
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		$indent = str_repeat( "\t", $depth );
+
 		// Position classes based on depth
 		$position_classes = '';
-		$rounded_classes = '';
-		
-		if ($depth === 0) {
+		$rounded_classes  = '';
+
+		if ( $depth === 0 ) {
 			$position_classes = 'left-0 mt-2';
-			$rounded_classes = 'rounded-md';
-		} elseif ($depth === 1) {
+			$rounded_classes  = 'rounded-md';
+		} elseif ( $depth === 1 ) {
 			$position_classes = 'left-full top-0';
-			$rounded_classes = 'rounded-md';
-		} elseif ($depth === 2) {
+			$rounded_classes  = 'rounded-md';
+		} elseif ( $depth === 2 ) {
 			$position_classes = 'left-full top-0';
-			$rounded_classes = 'rounded-r-md'; // Only round the right corners
+			$rounded_classes  = 'rounded-r-md'; // Only round the right corners
 		}
-		
+
 		$output .= "\n$indent<ul class=\"absolute {$position_classes} {$rounded_classes} w-48 bg-white shadow-lg py-1 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out\">\n";
 	}
 
-	public function end_lvl(&$output, $depth = 0, $args = null) {
-		$indent = str_repeat("\t", $depth);
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
+		$indent  = str_repeat( "\t", $depth );
 		$output .= "$indent</ul>\n";
 	}
 
-	public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
-		$indent = ($depth) ? str_repeat("\t", $depth) : '';
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 
-		$classes = empty($item->classes) ? array() : (array) $item->classes;
+		$classes   = empty( $item->classes ) ? array() : (array) $item->classes;
 		$classes[] = 'menu-item-' . $item->ID;
 
 		// Add Tailwind CSS classes based on depth
-		if ($depth === 0) {
+		if ( $depth === 0 ) {
 			$classes[] = 'relative group';
-		} elseif ($depth === 1) {
+		} elseif ( $depth === 1 ) {
 			$classes[] = 'relative group';
-		} elseif ($depth === 2) {
+		} elseif ( $depth === 2 ) {
 			$classes[] = 'relative group';
 		}
 
-		$class_names = implode(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
-		$class_names = $class_names ? ' class="' . esc_attr($class_names) . '"' : '';
+		$class_names = implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args, $depth ) );
+		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
-		$id = apply_filters('nav_menu_item_id', 'menu-item-' . $item->ID, $item, $args, $depth);
-		$id = $id ? ' id="' . esc_attr($id) . '"' : '';
+		$id = apply_filters( 'nav_menu_item_id', 'menu-item-' . $item->ID, $item, $args, $depth );
+		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
 
 		$output .= $indent . '<li' . $id . $class_names . '>';
 
-		$atts = array();
-		$atts['title']  = !empty($item->attr_title) ? $item->attr_title : '';
-		$atts['target'] = !empty($item->target) ? $item->target : '';
-		$atts['rel']    = !empty($item->xfn) ? $item->xfn : '';
-		$atts['href']   = !empty($item->url) ? $item->url : '';
+		$atts           = array();
+		$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
+		$atts['target'] = ! empty( $item->target ) ? $item->target : '';
+		$atts['rel']    = ! empty( $item->xfn ) ? $item->xfn : '';
+		$atts['href']   = ! empty( $item->url ) ? $item->url : '';
 
 		// Add Tailwind CSS classes to the link based on depth
-		if ($depth === 0) {
+		if ( $depth === 0 ) {
 			$atts['class'] = 'block px-4 py-2 text-gray-600 hover:text-amber-500 transition';
-		} elseif ($depth === 1) {
+		} elseif ( $depth === 1 ) {
 			$atts['class'] = 'block px-4 py-2 text-gray-600 hover:text-amber-500 hover:bg-gray-50 transition flex justify-between items-center';
 			// Add arrow for items with children
-			if (in_array('menu-item-has-children', $classes)) {
+			if ( in_array( 'menu-item-has-children', $classes ) ) {
 				$atts['class'] .= ' after:content-[\'›\'] after:ml-2 after:text-gray-400';
 			}
 		} else {
 			$atts['class'] = 'block px-4 py-2 text-gray-600 hover:text-amber-500 hover:bg-gray-50 transition';
 		}
 
-		$atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args, $depth);
+		$atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args, $depth );
 
 		$attributes = '';
-		foreach ($atts as $attr => $value) {
-			if (!empty($value)) {
-				$value = ('href' === $attr) ? esc_url($value) : esc_attr($value);
+		foreach ( $atts as $attr => $value ) {
+			if ( ! empty( $value ) ) {
+				$value       = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
 				$attributes .= ' ' . $attr . '="' . $value . '"';
 			}
 		}
 
-		$title = apply_filters('the_title', $item->title, $item->ID);
-		$title = apply_filters('nav_menu_item_title', $title, $item, $args, $depth);
+		$title = apply_filters( 'the_title', $item->title, $item->ID );
+		$title = apply_filters( 'nav_menu_item_title', $title, $item, $args, $depth );
 
-		$item_output = $args->before;
+		$item_output  = $args->before;
 		$item_output .= '<a' . $attributes . '>';
 		$item_output .= $args->link_before . $title . $args->link_after;
 		$item_output .= '</a>';
 		$item_output .= $args->after;
 
-		$output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 	}
 }
 
@@ -308,22 +308,22 @@ class Kitchenary_Footer_Menu_Walker extends Walker_Nav_Menu {
  */
 function kitchenary_scripts() {
 	// Enqueue main stylesheet
-	wp_enqueue_style('kitchenary-style', get_stylesheet_uri(), array(), wp_get_theme()->get('Version'));
-	
+	wp_enqueue_style( 'kitchenary-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+
 	// Enqueue Tailwind CSS
-	wp_enqueue_style('kitchenary-tailwind', get_template_directory_uri() . '/assets/css/main.css', array(), wp_get_theme()->get('Version'));
-	
+	wp_enqueue_style( 'kitchenary-tailwind', get_template_directory_uri() . '/assets/css/main.css', array(), wp_get_theme()->get( 'Version' ) );
+
 	// Enqueue Font Awesome
-	wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', array(), '6.0.0');
-	
+	wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', array(), '6.0.0' );
+
 	// Enqueue Swiper CSS
-	wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0');
-	
+	wp_enqueue_style( 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0' );
+
 	// Enqueue Swiper JS
-	wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
-	
+	wp_enqueue_script( 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true );
+
 	// Enqueue custom JS
-	wp_enqueue_script('kitchenary-scripts', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), wp_get_theme()->get('Version'), true);
+	wp_enqueue_script( 'kitchenary-scripts', get_template_directory_uri() . '/assets/js/main.js', array( 'jquery' ), wp_get_theme()->get( 'Version' ), true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -507,9 +507,9 @@ function kitchenary_widgets_init() {
 	// Recipe Sidebar (for single-recipe.php)
 	register_sidebar(
 		array(
-			'name'          => esc_html__('Recipe Sidebar', 'kitchenary'),
+			'name'          => esc_html__( 'Recipe Sidebar', 'kitchenary' ),
 			'id'            => 'recipe-sidebar',
-			'description'   => esc_html__('Add widgets here to appear in recipe sidebar.', 'kitchenary'),
+			'description'   => esc_html__( 'Add widgets here to appear in recipe sidebar.', 'kitchenary' ),
 			'before_widget' => '<div id="%1$s" class="widget %2$s bg-white rounded-xl shadow-md overflow-hidden mb-6">',
 			'after_widget'  => '</div>',
 			'before_title'  => '<h3 class="text-xl font-bold text-white bg-amber-500 px-6 py-4">',
@@ -520,9 +520,9 @@ function kitchenary_widgets_init() {
 	// Blog Sidebar (for single.php)
 	register_sidebar(
 		array(
-			'name'          => esc_html__('Blog Sidebar', 'kitchenary'),
+			'name'          => esc_html__( 'Blog Sidebar', 'kitchenary' ),
 			'id'            => 'blog-sidebar',
-			'description'   => esc_html__('Add widgets here to appear in blog post sidebar.', 'kitchenary'),
+			'description'   => esc_html__( 'Add widgets here to appear in blog post sidebar.', 'kitchenary' ),
 			'before_widget' => '<div id="%1$s" class="widget %2$s bg-white rounded-xl shadow-md overflow-hidden mb-6">',
 			'after_widget'  => '</div>',
 			'before_title'  => '<h3 class="text-xl font-bold text-white bg-amber-500 px-6 py-4">',
@@ -530,26 +530,26 @@ function kitchenary_widgets_init() {
 		)
 	);
 }
-add_action('widgets_init', 'kitchenary_widgets_init');
+add_action( 'widgets_init', 'kitchenary_widgets_init' );
 
 /**
  * Register recipe review post type.
  */
 function kitchenary_register_recipe_review_post_type() {
 	$labels = array(
-		'name'                  => _x( 'Recipe Reviews', 'Post type general name', 'kitchenary' ),
-		'singular_name'         => _x( 'Recipe Review', 'Post type singular name', 'kitchenary' ),
-		'menu_name'             => _x( 'Recipe Reviews', 'Admin Menu text', 'kitchenary' ),
-		'name_admin_bar'        => _x( 'Recipe Review', 'Add New on Toolbar', 'kitchenary' ),
-		'add_new'               => __( 'Add New', 'kitchenary' ),
-		'add_new_item'          => __( 'Add New Review', 'kitchenary' ),
-		'new_item'              => __( 'New Review', 'kitchenary' ),
-		'edit_item'             => __( 'Edit Review', 'kitchenary' ),
-		'view_item'             => __( 'View Review', 'kitchenary' ),
-		'all_items'             => __( 'All Reviews', 'kitchenary' ),
-		'search_items'          => __( 'Search Reviews', 'kitchenary' ),
-		'not_found'             => __( 'No reviews found.', 'kitchenary' ),
-		'not_found_in_trash'    => __( 'No reviews found in Trash.', 'kitchenary' ),
+		'name'               => _x( 'Recipe Reviews', 'Post type general name', 'kitchenary' ),
+		'singular_name'      => _x( 'Recipe Review', 'Post type singular name', 'kitchenary' ),
+		'menu_name'          => _x( 'Recipe Reviews', 'Admin Menu text', 'kitchenary' ),
+		'name_admin_bar'     => _x( 'Recipe Review', 'Add New on Toolbar', 'kitchenary' ),
+		'add_new'            => __( 'Add New', 'kitchenary' ),
+		'add_new_item'       => __( 'Add New Review', 'kitchenary' ),
+		'new_item'           => __( 'New Review', 'kitchenary' ),
+		'edit_item'          => __( 'Edit Review', 'kitchenary' ),
+		'view_item'          => __( 'View Review', 'kitchenary' ),
+		'all_items'          => __( 'All Reviews', 'kitchenary' ),
+		'search_items'       => __( 'Search Reviews', 'kitchenary' ),
+		'not_found'          => __( 'No reviews found.', 'kitchenary' ),
+		'not_found_in_trash' => __( 'No reviews found in Trash.', 'kitchenary' ),
 	);
 
 	$args = array(
@@ -593,8 +593,8 @@ add_action( 'add_meta_boxes', 'kitchenary_add_recipe_review_meta_boxes' );
 function kitchenary_recipe_review_meta_box_callback( $post ) {
 	wp_nonce_field( 'recipe_review_meta_box', 'recipe_review_meta_box_nonce' );
 
-	$rating = get_post_meta( $post->ID, '_recipe_review_rating', true );
-	$recipe_id = get_post_meta( $post->ID, '_recipe_review_recipe_id', true );
+	$rating        = get_post_meta( $post->ID, '_recipe_review_rating', true );
+	$recipe_id     = get_post_meta( $post->ID, '_recipe_review_recipe_id', true );
 	$helpful_votes = get_post_meta( $post->ID, '_recipe_review_helpful_votes', true );
 	$helpful_votes = $helpful_votes ? $helpful_votes : 0;
 
@@ -616,12 +616,14 @@ function kitchenary_recipe_review_meta_box_callback( $post ) {
 			<select name="recipe_review_recipe_id" id="recipe_review_recipe_id" required>
 				<option value=""><?php esc_html_e( 'Select a recipe', 'kitchenary' ); ?></option>
 				<?php
-				$recipes = get_posts( array(
-					'post_type'      => 'recipe',
-					'posts_per_page' => -1,
-					'orderby'        => 'title',
-					'order'          => 'ASC',
-				) );
+				$recipes = get_posts(
+					array(
+						'post_type'      => 'recipe',
+						'posts_per_page' => -1,
+						'orderby'        => 'title',
+						'order'          => 'ASC',
+					)
+				);
 
 				foreach ( $recipes as $recipe ) :
 					?>
@@ -679,18 +681,20 @@ function kitchenary_update_recipe_rating( $post_id ) {
 		return;
 	}
 
-	$reviews = get_posts( array(
-		'post_type'      => 'recipe_review',
-		'posts_per_page' => -1,
-		'meta_key'       => '_recipe_review_recipe_id',
-		'meta_value'     => $recipe_id,
-	) );
+	$reviews = get_posts(
+		array(
+			'post_type'      => 'recipe_review',
+			'posts_per_page' => -1,
+			'meta_key'       => '_recipe_review_recipe_id',
+			'meta_value'     => $recipe_id,
+		)
+	);
 
 	$total_rating = 0;
 	$review_count = count( $reviews );
 
 	foreach ( $reviews as $review ) {
-		$rating = get_post_meta( $review->ID, '_recipe_review_rating', true );
+		$rating        = get_post_meta( $review->ID, '_recipe_review_rating', true );
 		$total_rating += intval( $rating );
 	}
 
@@ -712,34 +716,38 @@ function kitchenary_handle_recipe_review_submission() {
 	}
 
 	$recipe_id = isset( $_POST['recipe_id'] ) ? intval( $_POST['recipe_id'] ) : 0;
-	$title = isset( $_POST['review_title'] ) ? sanitize_text_field( $_POST['review_title'] ) : '';
-	$rating = isset( $_POST['review_rating'] ) ? intval( $_POST['review_rating'] ) : 0;
-	$content = isset( $_POST['review_content'] ) ? wp_kses_post( $_POST['review_content'] ) : '';
+	$title     = isset( $_POST['review_title'] ) ? sanitize_text_field( $_POST['review_title'] ) : '';
+	$rating    = isset( $_POST['review_rating'] ) ? intval( $_POST['review_rating'] ) : 0;
+	$content   = isset( $_POST['review_content'] ) ? wp_kses_post( $_POST['review_content'] ) : '';
 
 	if ( ! $recipe_id || ! $title || ! $rating || ! $content ) {
 		wp_send_json_error( array( 'message' => __( 'Please fill in all required fields.', 'kitchenary' ) ) );
 	}
 
 	$current_user = wp_get_current_user();
-	$has_reviewed = get_posts( array(
-		'post_type'      => 'recipe_review',
-		'posts_per_page' => 1,
-		'meta_key'       => '_recipe_review_recipe_id',
-		'meta_value'     => $recipe_id,
-		'author'         => $current_user->ID,
-	) );
+	$has_reviewed = get_posts(
+		array(
+			'post_type'      => 'recipe_review',
+			'posts_per_page' => 1,
+			'meta_key'       => '_recipe_review_recipe_id',
+			'meta_value'     => $recipe_id,
+			'author'         => $current_user->ID,
+		)
+	);
 
 	if ( $has_reviewed ) {
 		wp_send_json_error( array( 'message' => __( 'You have already reviewed this recipe.', 'kitchenary' ) ) );
 	}
 
-	$review_id = wp_insert_post( array(
-		'post_title'   => $title,
-		'post_content' => $content,
-		'post_status'  => 'publish',
-		'post_type'    => 'recipe_review',
-		'post_author'  => $current_user->ID,
-	) );
+	$review_id = wp_insert_post(
+		array(
+			'post_title'   => $title,
+			'post_content' => $content,
+			'post_status'  => 'publish',
+			'post_type'    => 'recipe_review',
+			'post_author'  => $current_user->ID,
+		)
+	);
 
 	if ( is_wp_error( $review_id ) ) {
 		wp_send_json_error( array( 'message' => __( 'Error creating review. Please try again.', 'kitchenary' ) ) );
